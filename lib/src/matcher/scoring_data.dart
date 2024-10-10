@@ -1,0 +1,23 @@
+final class ScoringData {
+  int minutiaCount = 0;
+  double minutiaScore = 0;
+  double minutiaFractionInProbe = 0;
+  double minutiaFractionInCandidate = 0;
+  double minutiaFraction = 0;
+  double minutiaFractionScore = 0;
+  int supportingEdgeSum = 0;
+  int edgeCount = 0;
+  double edgeScore = 0;
+  int supportedMinutiaCount = 0;
+  double supportedMinutiaScore = 0;
+  int minutiaTypeHits = 0;
+  double minutiaTypeScore = 0;
+  int distanceErrorSum = 0;
+  int distanceAccuracySum = 0;
+  double distanceAccuracyScore = 0;
+  double angleErrorSum = 0;
+  double angleAccuracySum = 0;
+  double angleAccuracyScore = 0;
+  double totalScore = 0;
+  double shapedScore = 0;
+}
