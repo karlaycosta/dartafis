@@ -2,13 +2,12 @@ import 'package:collection/collection.dart';
 
 import '../configuration/parameters.dart';
 import '../features/neighbor_edge.dart';
-import '../primitives/float_angle.dart';
 import 'minutia_pair.dart';
 import 'pairing_graph.dart';
 
 final class EdgeSpider {
   static final double _complementaryMaxAngleError =
-      FloatAngle.complementary(maxAngleError);
+      complementary(maxAngleError);
 
   static List<MinutiaPair> _matchPairs(
     List<NeighborEdge> pstar,
@@ -32,11 +31,9 @@ final class EdgeSpider {
       }
       for (int pindex = start; pindex < end; pindex++) {
         final pedge = pstar[pindex];
-        final rdiff =
-            FloatAngle.difference(pedge.referenceAngle, cedge.referenceAngle);
+        final rdiff = difference(pedge.referenceAngle, cedge.referenceAngle);
         if (rdiff <= maxAngleError || rdiff >= _complementaryMaxAngleError) {
-          final ndiff =
-              FloatAngle.difference(pedge.neighborAngle, cedge.neighborAngle);
+          final ndiff = difference(pedge.neighborAngle, cedge.neighborAngle);
           if (ndiff <= maxAngleError || ndiff >= _complementaryMaxAngleError) {
             final pair = MinutiaPair();
             pair.probe = pedge.neighbor;

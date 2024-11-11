@@ -3,12 +3,11 @@ import 'dart:math' as match;
 import '../configuration/parameters.dart';
 import '../features/edge_shape.dart';
 import '../features/indexed_edge.dart';
-import '../primitives/float_angle.dart';
 import '../templates/search_template.dart';
 
 final class EdgeHashes {
   static final double _complementaryMaxAngleError =
-      FloatAngle.complementary(maxAngleError);
+      complementary(maxAngleError);
 
   static int hash(EdgeShape edge) {
     final int lengthBin = edge.length ~/ maxDistanceError;
@@ -21,11 +20,11 @@ final class EdgeHashes {
     final int lengthDelta = probe.length - candidate.length;
     if (lengthDelta >= -maxDistanceError && lengthDelta <= maxDistanceError) {
       final referenceDelta =
-          FloatAngle.difference(probe.referenceAngle, candidate.referenceAngle);
+          difference(probe.referenceAngle, candidate.referenceAngle);
       if (referenceDelta <= maxAngleError ||
           referenceDelta >= _complementaryMaxAngleError) {
         final neighborDelta =
-            FloatAngle.difference(probe.neighborAngle, candidate.neighborAngle);
+            difference(probe.neighborAngle, candidate.neighborAngle);
         if (neighborDelta <= maxAngleError ||
             neighborDelta >= _complementaryMaxAngleError) {
           return true;
@@ -42,16 +41,14 @@ final class EdgeHashes {
         (edge.length + maxDistanceError) ~/ maxDistanceError;
     final int angleBins = (2 * match.pi / maxAngleError).ceil();
     final int minReferenceBin =
-        FloatAngle.difference(edge.referenceAngle, maxAngleError) ~/
-            maxAngleError;
+        difference(edge.referenceAngle, maxAngleError) ~/ maxAngleError;
     final int maxReferenceBin =
-        FloatAngle.add(edge.referenceAngle, maxAngleError) ~/ maxAngleError;
+        add(edge.referenceAngle, maxAngleError) ~/ maxAngleError;
     final int endReferenceBin = (maxReferenceBin + 1) % angleBins;
     final int minNeighborBin =
-        FloatAngle.difference(edge.neighborAngle, maxAngleError) ~/
-            maxAngleError;
+        difference(edge.neighborAngle, maxAngleError) ~/ maxAngleError;
     final int maxNeighborBin =
-        FloatAngle.add(edge.neighborAngle, maxAngleError) ~/ maxAngleError;
+        add(edge.neighborAngle, maxAngleError) ~/ maxAngleError;
     final int endNeighborBin = (maxNeighborBin + 1) % angleBins;
     final coverage = <int>[];
     for (int lengthBin = minLengthBin; lengthBin <= maxLengthBin; lengthBin++) {

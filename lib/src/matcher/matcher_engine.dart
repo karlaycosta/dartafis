@@ -28,8 +28,7 @@ double findMatch(Probe probe, SearchTemplate candidate) {
     for (int i = 0; i < matcher.roots.pairs.length; i++) {
       EdgeSpider.crawl(probe.template.edges, candidate.edges, matcher.pairing,
           matcher.roots.pairs[i], matcher.queue);
-      Scoring.compute(
-          probe.template, candidate, matcher.pairing, matcher.score);
+      compute(probe.template, candidate, matcher.pairing, matcher.score);
       double partial = matcher.score.shapedScore;
       if (best < 0 || partial > high) {
         high = partial;
@@ -40,8 +39,7 @@ double findMatch(Probe probe, SearchTemplate candidate) {
     if (best >= 0) {
       EdgeSpider.crawl(probe.template.edges, candidate.edges, matcher.pairing,
           matcher.roots.pairs[best], matcher.queue);
-      Scoring.compute(
-          probe.template, candidate, matcher.pairing, matcher.score);
+      compute(probe.template, candidate, matcher.pairing, matcher.score);
       matcher.pairing.clear();
     }
     matcher.roots.discard();
