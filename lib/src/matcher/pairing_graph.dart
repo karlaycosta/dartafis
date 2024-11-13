@@ -11,19 +11,34 @@ final class PairingGraph {
   void reserveProbe(Probe probe) {
     final capacity = probe.template.minutiae.length;
     if (capacity > tree.length) {
-      tree = List.filled(capacity, null);
-      byProbe = List.filled(capacity, null);
+      tree = List<MinutiaPair?>.generate(
+        capacity,
+        (_) => null,
+        growable: false,
+      );
+      byProbe = List<MinutiaPair?>.generate(
+        capacity,
+        (_) => null,
+        growable: false,
+      );
     }
   }
 
   void reserveCandidate(SearchTemplate candidate) {
     final capacity = candidate.minutiae.length;
     if (byCandidate.length < capacity) {
-      byCandidate = List.filled(capacity, null);
+      byCandidate = List<MinutiaPair?>.generate(
+        capacity,
+        (_) => null,
+        growable: false,
+      );
     }
   }
 
   void addPair(MinutiaPair pair) {
+    if (count >= tree.length) {
+      throw Exception('Capacity exceeded');
+    }
     tree[count] = pair;
     byProbe[pair.probe] = pair;
     byCandidate[pair.candidate] = pair;
@@ -31,23 +46,21 @@ final class PairingGraph {
   }
 
   void support(MinutiaPair pair) {
-    if (byProbe[pair.probe] != null &&
-        byProbe[pair.probe]?.candidate == pair.candidate) {
-      byProbe[pair.probe]?.supportingEdges++;
+    final probePair = byProbe[pair.probe];
+    if (probePair != null && probePair.candidate == pair.candidate) {
+      probePair.supportingEdges++;
       byProbe[pair.probeRef]?.supportingEdges++;
     }
   }
 
   void clear() {
     for (int i = 0; i < count; i++) {
-      if (tree[i] != null) {
-        byProbe[tree[i]!.probe] = null;
-        byCandidate[tree[i]!.candidate] = null;
+      final pair = tree[i];
+      if (pair != null) {
+        byProbe[pair.probe] = null;
+        byCandidate[pair.candidate] = null;
+        tree[i] = null;
       }
-      if (i < 0) {
-        tree[0]?.supportingEdges = 0;
-      }
-      tree[i] = null;
     }
     count = 0;
   }

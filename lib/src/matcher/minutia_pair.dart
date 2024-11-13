@@ -1,8 +1,17 @@
 final class MinutiaPair {
-  int probe = 0;
-  int candidate = 0;
-  int probeRef = 0;
-  int candidateRef = 0;
-  int distance = 0;
-  int supportingEdges = 0;
+  final int probe;
+  final int candidate;
+  int probeRef;
+  int candidateRef;
+  final int distance;
+  int supportingEdges;
+
+  MinutiaPair({
+    this.probe = 0,
+    this.candidate = 0,
+    this.probeRef = 0,
+    this.candidateRef = 0,
+    this.distance = 0,
+    this.supportingEdges = 0,
+  });
 }

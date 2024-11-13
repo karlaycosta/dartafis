@@ -12,19 +12,15 @@ final class SearchTemplate {
   final List<FeatureMinutia> minutiae;
   final List<List<NeighborEdge>> edges;
 
-  static const int _prime = 1610612741;
-
   const SearchTemplate._(this.width, this.height, this.minutiae, this.edges);
 
   factory SearchTemplate(FeatureTemplate features) {
     final List<FeatureMinutia> minutiae = features.minutiae;
     final Map<FeatureMinutia, int> keys = {
-      for (final m in minutiae) m: ((m.x * _prime) + m.y) * _prime
+      for (final m in minutiae) m: ((m.x * 1610612741) + m.y) * 1610612741
     };
 
     minutiae.sort((a, b) {
-      // final keyA = ((a.x * _prime) + a.y) * _prime;
-      // final keyB = ((b.x * _prime) + b.y) * _prime;
       final keyA = keys[a]!;
       final keyB = keys[b]!;
 

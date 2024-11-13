@@ -10,6 +10,7 @@ final class RootEnumerator {
     final cminutiae = candidate.minutiae;
     int lookups = 0;
     int tried = 0;
+
     for (bool shortEdges in {false, true}) {
       for (int period = 1; period < cminutiae.length; period++) {
         for (int phase = 0; phase <= period; phase++) {
@@ -19,25 +20,27 @@ final class RootEnumerator {
             final cneighbor = (creference + period) % cminutiae.length;
             final cedge =
                 EdgeShape(cminutiae[creference], cminutiae[cneighbor]);
+
             if ((cedge.length >= minRootEdgeLength) ^ shortEdges) {
               final matches = probe.hash[EdgeHashes.hash(cedge)];
+
               if (matches != null) {
                 for (final match in matches) {
                   if (EdgeHashes.matching(match, cedge)) {
                     final duplicateKey = (match.reference << 16) | creference;
+
                     if (roots.duplicates.add(duplicateKey)) {
-                      final pair = MinutiaPair();
-                      pair.probe = match.reference;
-                      pair.candidate = creference;
-                      roots.pairs.add(pair);
+                      roots.pairs.add(MinutiaPair(
+                        probe: match.reference,
+                        candidate: creference,
+                      ));
                     }
-                    tried++;
-                    if (tried >= maxTriedRoots) return;
+                    if (++tried >= maxTriedRoots) return;
                   }
                 }
               }
-              lookups++;
-              if (lookups >= maxRootEdgeLookups) return;
+
+              if (++lookups >= maxRootEdgeLookups) return;
             }
           }
         }

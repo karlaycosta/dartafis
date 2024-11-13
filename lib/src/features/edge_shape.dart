@@ -2,22 +2,27 @@ import 'dart:math' as math;
 
 import '../configuration/parameters.dart';
 
-typedef DoublePoint = ({double x, double y});
 const polarCacheBits = 8;
 const polarCacheRadius = 1 << polarCacheBits;
 const polarCacheLength = polarCacheRadius * polarCacheRadius;
 
-double atan(DoublePoint vector) {
-  final angle = math.atan2(vector.y, vector.x);
+double atan(int x, int y) {
+  final angle = math.atan2(y, x);
   return angle >= 0 ? angle : angle + pi2;
 }
 
 class EdgeShape {
   static bool _isLoad = false;
-  static final List<int> polarDistanceCache =
-      List<int>.filled(polarCacheLength, 0);
-  static final List<double> polarAngleCache =
-      List<double>.filled(polarCacheLength, 0.0);
+  static final List<int> polarDistanceCache = List<int>.generate(
+    polarCacheLength,
+    (_) => 0,
+    growable: false,
+  );
+  static final List<double> polarAngleCache = List<double>.generate(
+    polarCacheLength,
+    (_) => 0.0,
+    growable: false,
+  );
 
   late final int length;
   late final double referenceAngle;
@@ -29,8 +34,7 @@ class EdgeShape {
       for (int x = 0; x < polarCacheRadius; x++) {
         final index = y * polarCacheRadius + x;
         polarDistanceCache[index] = math.sqrt(x * x + y * y).round();
-        polarAngleCache[index] =
-            (y > 0 || x > 0) ? atan((x: x.toDouble(), y: y.toDouble())) : 0.0;
+        polarAngleCache[index] = (y > 0 || x > 0) ? atan(x, y) : 0.0;
       }
     }
     _isLoad = true;
@@ -38,7 +42,7 @@ class EdgeShape {
 
   EdgeShape(FeatureMinutia reference, FeatureMinutia neighbor) {
     _load();
-    double quadrant = 0;
+    double quadrant = 0.0;
     int x = neighbor.x - reference.x;
     int y = neighbor.y - reference.y;
     if (y < 0) {

@@ -16,30 +16,30 @@ final class EdgeSpider {
     final results = <MinutiaPair>[];
     int start = 0;
     int end = 0;
-    for (int cindex = 0; cindex < cstar.length; cindex++) {
-      final cedge = cstar[cindex];
+    for (final cedge in cstar) {
       while (start < pstar.length &&
           pstar[start].length < cedge.length - maxDistanceError) {
         start++;
       }
-      if (end < start) {
-        end = start;
-      }
+
+      if (end < start) end = start;
+
       while (end < pstar.length &&
           pstar[end].length <= cedge.length + maxDistanceError) {
         end++;
       }
+
       for (int pindex = start; pindex < end; pindex++) {
         final pedge = pstar[pindex];
         final rdiff = difference(pedge.referenceAngle, cedge.referenceAngle);
         if (rdiff <= maxAngleError || rdiff >= _complementaryMaxAngleError) {
           final ndiff = difference(pedge.neighborAngle, cedge.neighborAngle);
           if (ndiff <= maxAngleError || ndiff >= _complementaryMaxAngleError) {
-            final pair = MinutiaPair();
-            pair.probe = pedge.neighbor;
-            pair.candidate = cedge.neighbor;
-            pair.distance = cedge.length;
-            results.add(pair);
+            results.add(MinutiaPair(
+              probe: pedge.neighbor,
+              candidate: cedge.neighbor,
+              distance: cedge.length,
+            ));
           }
         }
       }
@@ -53,16 +53,11 @@ final class EdgeSpider {
     PairingGraph pairing,
     PriorityQueue<MinutiaPair> queue,
   ) {
-    final reference = pairing.tree[pairing.count - 1];
-    if (reference == null) {
-      throw Exception();
-    }
+    final reference = pairing.tree[pairing.count - 1] ?? (throw Exception());
+
     final pstar = pedges[reference.probe];
     final cstar = cedges[reference.candidate];
-    for (final pair in _matchPairs(
-      pstar,
-      cstar,
-    )) {
+    for (final pair in _matchPairs(pstar, cstar)) {
       pair.probeRef = reference.probe;
       pair.candidateRef = reference.candidate;
       if (pairing.byCandidate[pair.candidate] == null &&

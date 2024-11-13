@@ -2,7 +2,7 @@ import 'minutia_pair.dart';
 
 final class RootList {
   final List<MinutiaPair> pairs = [];
-  final duplicates = <int>{};
+  final Set<int> duplicates = {};
 
   void discard() {
     pairs.clear();
