@@ -7,7 +7,7 @@ final class Matcher {
   late final Probe _probe;
 
   Matcher(Template probe) {
-    _probe = (template: probe.inner, hash: EdgeHashes.build(probe.inner));
+    _probe = (template: probe.inner, hash: build(probe.inner));
   }
 
   double match(Template candidate) {

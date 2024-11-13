@@ -7,6 +7,11 @@ import 'minutia_pair.dart';
 import 'pairing_graph.dart';
 import 'scoring_data.dart';
 
+double _distance(double first, double second) {
+  final double delta = (first - second).abs();
+  return delta <= pi ? delta : pi2 - delta;
+}
+
 void compute(
   SearchTemplate probe,
   SearchTemplate candidate,
@@ -65,11 +70,11 @@ void compute(
     );
     score.angleErrorSum += match.max(
       innerAngleRadius,
-      distance(probeEdge.referenceAngle, candidateEdge.referenceAngle),
+      _distance(probeEdge.referenceAngle, candidateEdge.referenceAngle),
     );
     score.angleErrorSum += match.max(
       innerAngleRadius,
-      distance(probeEdge.neighborAngle, candidateEdge.neighborAngle),
+      _distance(probeEdge.neighborAngle, candidateEdge.neighborAngle),
     );
   }
 

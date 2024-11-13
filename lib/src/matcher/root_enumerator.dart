@@ -22,11 +22,11 @@ final class RootEnumerator {
                 EdgeShape(cminutiae[creference], cminutiae[cneighbor]);
 
             if ((cedge.length >= minRootEdgeLength) ^ shortEdges) {
-              final matches = probe.hash[EdgeHashes.hash(cedge)];
+              final matches = probe.hash[hash(cedge)];
 
               if (matches != null) {
                 for (final match in matches) {
-                  if (EdgeHashes.matching(match, cedge)) {
+                  if (matching(match, cedge)) {
                     final duplicateKey = (match.reference << 16) | creference;
 
                     if (roots.duplicates.add(duplicateKey)) {

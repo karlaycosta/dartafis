@@ -6,6 +6,8 @@ typedef Probe = ({SearchTemplate template, Map<int, List<IndexedEdge>> hash});
 
 typedef FeatureTemplate = ({IntPoint size, List<FeatureMinutia> minutiae});
 
+typedef IntPoint = ({int x, int y});
+
 final class SearchTemplate {
   final int width;
   final int height;

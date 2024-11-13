@@ -23,17 +23,17 @@ double findMatch(Probe probe, SearchTemplate candidate) {
     matcher.pairing.reserveProbe(probe);
     matcher.pairing.reserveCandidate(candidate);
     RootEnumerator.enumerate(probe, candidate, matcher.roots);
-    
+
     double high = 0;
     int best = -1;
 
-      // Pré-calcular as arestas para evitar recalcular dentro do loop
+    // Pré-calcular as arestas para evitar recalcular dentro do loop
     final probeEdges = probe.template.edges;
     final candidateEdges = candidate.edges;
-    
+
     for (int i = 0; i < matcher.roots.pairs.length; i++) {
-      EdgeSpider.crawl(probeEdges, candidateEdges, matcher.pairing,
-          matcher.roots.pairs[i], matcher.queue);
+      crawl(probeEdges, candidateEdges, matcher.pairing, matcher.roots.pairs[i],
+          matcher.queue);
       compute(probe.template, candidate, matcher.pairing, matcher.score);
       final double partial = matcher.score.shapedScore;
       if (partial > high) {
@@ -43,7 +43,7 @@ double findMatch(Probe probe, SearchTemplate candidate) {
       matcher.pairing.clear();
     }
     if (best >= 0) {
-      EdgeSpider.crawl(probeEdges, candidateEdges, matcher.pairing,
+      crawl(probeEdges, candidateEdges, matcher.pairing,
           matcher.roots.pairs[best], matcher.queue);
       compute(probe.template, candidate, matcher.pairing, matcher.score);
       matcher.pairing.clear();

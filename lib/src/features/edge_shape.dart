@@ -2,17 +2,49 @@ import 'dart:math' as math;
 
 import '../configuration/parameters.dart';
 
-const polarCacheBits = 8;
-const polarCacheRadius = 1 << polarCacheBits;
-const polarCacheLength = polarCacheRadius * polarCacheRadius;
-
 double atan(int x, int y) {
   final angle = math.atan2(y, x);
   return angle >= 0 ? angle : angle + pi2;
 }
 
+double opposite(double angle) {
+  return angle < pi ? angle + pi : angle - pi;
+}
+
+/// Retorna o número de zero bits que precedem o bit de ordem mais alta ("mais à esquerda")
+/// na representação binária de complemento de dois do valor [int] especificado. Retorna 32
+/// se o valor especificado não tiver um bit em sua representação em complemento de dois,
+/// ou seja, se for igual a zero.
+int numberOfLeadingZeros(int i) {
+  if (i <= 0) return i < 0 ? 0 : 32;
+  int n = 1;
+  if (i >> 16 == 0) {
+    n += 16;
+    i <<= 16;
+  }
+  if (i >> 24 == 0) {
+    n += 8;
+    i <<= 8;
+  }
+  if (i >> 28 == 0) {
+    n += 4;
+    i <<= 4;
+  }
+  if (i >> 30 == 0) {
+    n += 2;
+    i <<= 2;
+  }
+  n -= i >> 31;
+  return n;
+}
+
+const double halfPi = 0.5 * math.pi;
+
 class EdgeShape {
   static bool _isLoad = false;
+  static final polarCacheBits = 8;
+  static final polarCacheRadius = 1 << polarCacheBits;
+  static final polarCacheLength = polarCacheRadius * polarCacheRadius;
   static final List<int> polarDistanceCache = List<int>.generate(
     polarCacheLength,
     (_) => 0,

@@ -26,27 +26,12 @@ const double thresholdFmr_100_000 = 32.01;
 
 const double pi = math.pi;
 const double pi2 = 2 * math.pi;
-const double halfPi = 0.5 * math.pi;
 
 /// Utility class for floating point angle operations.
-
-double add(double start, double delta) {
-  final double angle = start + delta;
-  return angle < pi2 ? angle : angle - pi2;
-}
 
 double difference(double first, double second) {
   final double angle = first - second;
   return angle >= 0 ? angle : angle + pi2;
-}
-
-double distance(double first, double second) {
-  final double delta = (first - second).abs();
-  return delta <= pi ? delta : pi2 - delta;
-}
-
-double opposite(double angle) {
-  return angle < pi ? angle + pi : angle - pi;
 }
 
 double complementary(double angle) {
@@ -56,44 +41,6 @@ double complementary(double angle) {
 
 /// End utility class for floating point angle operations.
 
-/// Utility class for integer operations.
-
-/// Retorna o número de zero bits que precedem o bit de ordem mais alta ("mais à esquerda")
-/// na representação binária de complemento de dois do valor [int] especificado. Retorna 32
-/// se o valor especificado não tiver um bit em sua representação em complemento de dois,
-/// ou seja, se for igual a zero.
-int numberOfLeadingZeros(int i) {
-  if (i <= 0) return i < 0 ? 0 : 32;
-  int n = 1;
-  if (i >> 16 == 0) {
-    n += 16;
-    i <<= 16;
-  }
-  if (i >> 24 == 0) {
-    n += 8;
-    i <<= 8;
-  }
-  if (i >> 28 == 0) {
-    n += 4;
-    i <<= 4;
-  }
-  if (i >> 30 == 0) {
-    n += 2;
-    i <<= 2;
-  }
-  n -= i >> 31;
-  return n;
-}
-
-/// End utility class for integer operations.
-
-typedef IntPoint = ({int x, int y});
-
 enum MinutiaType { ending, bifurcation }
 
-typedef FeatureMinutia = ({
-  int x,
-  int y,
-  double direction,
-  MinutiaType type,
-});
+typedef FeatureMinutia = ({int x, int y, double direction, MinutiaType type});
