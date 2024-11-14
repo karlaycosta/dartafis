@@ -1,32 +1,40 @@
-import '../configuration/parameters.dart';
-import '../features/indexed_edge.dart';
-import '../features/neighbor_edge.dart';
+import 'package:dartafis/src/configuration/parameters.dart';
+import 'package:dartafis/src/features/neighbor_edge.dart';
 
-typedef Probe = ({SearchTemplate template, Map<int, List<IndexedEdge>> hash});
+/// Um typedef para um template de característica que contém as seguintes
+/// propriedades:
+///
+/// - `x` (int): A coordenada x da característica.
+/// - `y` (int): A coordenada y da característica.
+/// - `minutiae` (List<FeatureMinutia>): Uma lista de minúcias associadas
+///   à característica.
+typedef FeatureTemplate = ({int x, int y, List<FeatureMinutia> minutiae});
 
-typedef FeatureTemplate = ({IntPoint size, List<FeatureMinutia> minutiae});
-
-typedef IntPoint = ({int x, int y});
-
+/// Uma classe template para funcionalidade de busca.
+///
+/// Esta classe é destinada a ser usada como base para implementar recursos
+/// relacionados à busca em sua aplicação. Ela fornece uma estrutura e
+/// funcionalidade comum que pode ser estendida e personalizada conforme
+/// necessário.
 final class SearchTemplate {
-  final int width;
-  final int height;
-  final List<FeatureMinutia> minutiae;
-  final List<List<NeighborEdge>> edges;
-
-  const SearchTemplate._(this.width, this.height, this.minutiae, this.edges);
-
+  /// Um construtor factory para criar uma instância de [SearchTemplate].
+  ///
+  /// Este construtor recebe um objeto [FeatureTemplate] como parâmetro
+  /// e retorna uma instância de [SearchTemplate].
+  ///
+  /// - Parâmetro [features]: Uma instância de [FeatureTemplate] que contém
+  ///   as características necessárias para criar um [SearchTemplate].
   factory SearchTemplate(FeatureTemplate features) {
-    final List<FeatureMinutia> minutiae = features.minutiae;
-    final Map<FeatureMinutia, int> keys = {
-      for (final m in minutiae) m: ((m.x * 1610612741) + m.y) * 1610612741
+    final minutiae = features.minutiae;
+    final keys = <FeatureMinutia, int>{
+      for (final m in minutiae) m: ((m.x * 1610612741) + m.y) * 1610612741,
     };
 
     minutiae.sort((a, b) {
       final keyA = keys[a]!;
       final keyB = keys[b]!;
 
-      int result = keyA.compareTo(keyB);
+      var result = keyA.compareTo(keyB);
       if (result != 0) return result;
 
       result = a.x.compareTo(b.x);
@@ -40,7 +48,29 @@ final class SearchTemplate {
 
       return a.type.index.compareTo(b.type.index);
     });
-    final List<List<NeighborEdge>> edges = buildTable(minutiae);
-    return SearchTemplate._(features.size.x, features.size.y, minutiae, edges);
+    final edges = buildTable(minutiae);
+    return SearchTemplate._(features.x, features.y, minutiae, edges);
   }
+
+  const SearchTemplate._(this.width, this.height, this.minutiae, this.edges);
+
+  /// A largura do template de busca.
+  ///
+  /// Este valor determina a largura do template em pixels.
+  final int width;
+
+  /// A altura do template de busca.
+  ///
+  /// Este valor representa a altura em pixels.
+  final int height;
+
+  /// Uma lista de objetos `FeatureMinutia` representando os pontos de minúcias
+  /// em uma impressão digital ou outro conjunto de características biométricas.
+  final List<FeatureMinutia> minutiae;
+
+  /// Uma lista de listas contendo objetos `NeighborEdge`.
+  ///
+  /// Cada lista interna representa uma coleção de arestas associadas a um
+  /// vizinho específico.
+  final List<List<NeighborEdge>> edges;
 }

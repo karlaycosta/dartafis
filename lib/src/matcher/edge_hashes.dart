@@ -1,20 +1,36 @@
-import '../configuration/parameters.dart';
-import '../features/edge_shape.dart';
-import '../features/indexed_edge.dart';
-import '../templates/search_template.dart';
+import 'package:dartafis/src/configuration/parameters.dart';
+import 'package:dartafis/src/features/edge_shape.dart';
+import 'package:dartafis/src/features/indexed_edge.dart';
+import 'package:dartafis/src/templates/search_template.dart';
 
 final double _complementaryMaxAngleError = complementary(maxAngleError);
-final int angleBins = (pi2 / maxAngleError).ceil();
+final int _angleBins = (pi2 / maxAngleError).ceil();
 
+/// Calcula o hash de uma aresta (`EdgeShape`).
+///
+/// O hash é calculado com base no comprimento da aresta e nos ângulos
+/// de referência
+/// e do vizinho, divididos em bins.
+///
+/// - [edge]: A aresta para a qual o hash será calculado.
+/// - Retorna um inteiro representando o hash da aresta.
 int hash(EdgeShape edge) {
-  final int lengthBin = edge.length ~/ maxDistanceError;
-  final int referenceAngleBin = edge.referenceAngle ~/ maxAngleError;
-  final int neighborAngleBin = edge.neighborAngle ~/ maxAngleError;
+  final lengthBin = edge.length ~/ maxDistanceError;
+  final referenceAngleBin = edge.referenceAngle ~/ maxAngleError;
+  final neighborAngleBin = edge.neighborAngle ~/ maxAngleError;
   return (referenceAngleBin << 24) + (neighborAngleBin << 16) + lengthBin;
 }
 
+/// Verifica se duas arestas (`EdgeShape`) são correspondentes.
+///
+/// A correspondência é determinada com base nas diferenças de comprimento
+/// e ângulos entre as arestas de referência e do vizinho.
+///
+/// - [probe]: A aresta de referência.
+/// - [candidate]: A aresta candidata.
+/// - Retorna `true` se as arestas corresponderem, caso contrário, `false`.
 bool matching(EdgeShape probe, EdgeShape candidate) {
-  final int lengthDelta = (probe.length - candidate.length).abs();
+  final lengthDelta = (probe.length - candidate.length).abs();
   if (lengthDelta > maxDistanceError) return false;
 
   final referenceDelta =
@@ -28,33 +44,47 @@ bool matching(EdgeShape probe, EdgeShape candidate) {
       neighborDelta >= _complementaryMaxAngleError;
 }
 
+/// Adiciona um delta a um ângulo, garantindo que o resultado esteja no
+/// intervalo [0, 2*pi].
+///
+/// - [start]: O ângulo inicial.
+/// - [delta]: O delta a ser adicionado.
+/// - Retorna o ângulo resultante.
 double _add(double start, double delta) {
-  final double angle = start + delta;
+  final angle = start + delta;
   return angle < pi2 ? angle : angle - pi2;
 }
 
+/// Calcula a cobertura de bins de uma aresta (`EdgeShape`).
+///
+/// A cobertura é determinada com base nos comprimentos e ângulos de
+/// referência e do vizinho, divididos em bins.
+///
+/// - [edge]: A aresta para a qual a cobertura será calculada.
+/// - Retorna um conjunto de inteiros representando os bins cobertos
+/// pela aresta.
 Set<int> _coverage(EdgeShape edge) {
-  final int minLengthBin = (edge.length - maxDistanceError) ~/ maxDistanceError;
-  final int maxLengthBin = (edge.length + maxDistanceError) ~/ maxDistanceError;
-  final int minReferenceBin =
+  final minLengthBin = (edge.length - maxDistanceError) ~/ maxDistanceError;
+  final maxLengthBin = (edge.length + maxDistanceError) ~/ maxDistanceError;
+  final minReferenceBin =
       difference(edge.referenceAngle, maxAngleError) ~/ maxAngleError;
-  final int maxReferenceBin =
+  final maxReferenceBin =
       _add(edge.referenceAngle, maxAngleError) ~/ maxAngleError;
-  final int endReferenceBin = (maxReferenceBin + 1) % angleBins;
-  final int minNeighborBin =
+  final endReferenceBin = (maxReferenceBin + 1) % _angleBins;
+  final minNeighborBin =
       difference(edge.neighborAngle, maxAngleError) ~/ maxAngleError;
-  final int maxNeighborBin =
+  final maxNeighborBin =
       _add(edge.neighborAngle, maxAngleError) ~/ maxAngleError;
-  final int endNeighborBin = (maxNeighborBin + 1) % angleBins;
+  final endNeighborBin = (maxNeighborBin + 1) % _angleBins;
 
   final coverage = <int>{};
-  for (int lengthBin = minLengthBin; lengthBin <= maxLengthBin; lengthBin++) {
-    for (int referenceBin = minReferenceBin;
+  for (var lengthBin = minLengthBin; lengthBin <= maxLengthBin; lengthBin++) {
+    for (var referenceBin = minReferenceBin;
         referenceBin != endReferenceBin;
-        referenceBin = (referenceBin + 1) % angleBins) {
-      for (int neighborBin = minNeighborBin;
+        referenceBin = (referenceBin + 1) % _angleBins) {
+      for (var neighborBin = minNeighborBin;
           neighborBin != endNeighborBin;
-          neighborBin = (neighborBin + 1) % angleBins) {
+          neighborBin = (neighborBin + 1) % _angleBins) {
         coverage.add((referenceBin << 24) + (neighborBin << 16) + lengthBin);
       }
     }
@@ -62,11 +92,20 @@ Set<int> _coverage(EdgeShape edge) {
   return coverage;
 }
 
+/// Constrói um mapa de arestas indexadas (`IndexedEdge`) a partir de um
+/// template de busca (`SearchTemplate`).
+///
+/// O mapa é construído com base nos hashes das arestas, onde cada hash é
+/// associado a uma lista de arestas indexadas.
+///
+/// - [template]: O template de busca a partir do qual o mapa será construído.
+/// - Retorna um mapa onde as chaves são inteiros representando os hashes das
+/// arestas e os valores são listas de arestas indexadas.
 Map<int, List<IndexedEdge>> build(SearchTemplate template) {
   final map = <int, List<IndexedEdge>>{};
   final length = template.minutiae.length;
-  for (int reference = 0; reference < length; reference++) {
-    for (int neighbor = 0; neighbor < length; neighbor++) {
+  for (var reference = 0; reference < length; reference++) {
+    for (var neighbor = 0; neighbor < length; neighbor++) {
       if (reference == neighbor) continue;
 
       final edge = IndexedEdge(template.minutiae, reference, neighbor);
@@ -77,78 +116,3 @@ Map<int, List<IndexedEdge>> build(SearchTemplate template) {
   }
   return map;
 }
-
-// final class EdgeHashes {
-//   static final double _complementaryMaxAngleError =
-//       complementary(maxAngleError);
-//   static final int angleBins = (pi2 / maxAngleError).ceil();
-
-//   static int hash(EdgeShape edge) {
-//     final int lengthBin = edge.length ~/ maxDistanceError;
-//     final int referenceAngleBin = edge.referenceAngle ~/ maxAngleError;
-//     final int neighborAngleBin = edge.neighborAngle ~/ maxAngleError;
-//     return (referenceAngleBin << 24) + (neighborAngleBin << 16) + lengthBin;
-//   }
-
-//   static bool matching(EdgeShape probe, EdgeShape candidate) {
-//     final int lengthDelta = (probe.length - candidate.length).abs();
-//     if (lengthDelta > maxDistanceError) return false;
-
-//     final referenceDelta =
-//         difference(probe.referenceAngle, candidate.referenceAngle);
-//     if (referenceDelta > maxAngleError &&
-//         referenceDelta < _complementaryMaxAngleError) return false;
-
-//     final neighborDelta =
-//         difference(probe.neighborAngle, candidate.neighborAngle);
-//     return neighborDelta <= maxAngleError ||
-//         neighborDelta >= _complementaryMaxAngleError;
-//   }
-
-//   static Set<int> _coverage(EdgeShape edge) {
-//     final int minLengthBin =
-//         (edge.length - maxDistanceError) ~/ maxDistanceError;
-//     final int maxLengthBin =
-//         (edge.length + maxDistanceError) ~/ maxDistanceError;
-//     final int minReferenceBin =
-//         difference(edge.referenceAngle, maxAngleError) ~/ maxAngleError;
-//     final int maxReferenceBin =
-//         add(edge.referenceAngle, maxAngleError) ~/ maxAngleError;
-//     final int endReferenceBin = (maxReferenceBin + 1) % angleBins;
-//     final int minNeighborBin =
-//         difference(edge.neighborAngle, maxAngleError) ~/ maxAngleError;
-//     final int maxNeighborBin =
-//         add(edge.neighborAngle, maxAngleError) ~/ maxAngleError;
-//     final int endNeighborBin = (maxNeighborBin + 1) % angleBins;
-
-//     final coverage = <int>{};
-//     for (int lengthBin = minLengthBin; lengthBin <= maxLengthBin; lengthBin++) {
-//       for (int referenceBin = minReferenceBin;
-//           referenceBin != endReferenceBin;
-//           referenceBin = (referenceBin + 1) % angleBins) {
-//         for (int neighborBin = minNeighborBin;
-//             neighborBin != endNeighborBin;
-//             neighborBin = (neighborBin + 1) % angleBins) {
-//           coverage.add((referenceBin << 24) + (neighborBin << 16) + lengthBin);
-//         }
-//       }
-//     }
-//     return coverage;
-//   }
-
-//   static Map<int, List<IndexedEdge>> build(SearchTemplate template) {
-//     final map = <int, List<IndexedEdge>>{};
-//     final length = template.minutiae.length;
-//     for (int reference = 0; reference < length; reference++) {
-//       for (int neighbor = 0; neighbor < length; neighbor++) {
-//         if (reference == neighbor) continue;
-
-//         final edge = IndexedEdge(template.minutiae, reference, neighbor);
-//         for (final hash in _coverage(edge)) {
-//           map.putIfAbsent(hash, () => []).add(edge);
-//         }
-//       }
-//     }
-//     return map;
-//   }
-// }

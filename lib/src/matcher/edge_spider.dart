@@ -1,19 +1,26 @@
 import 'package:collection/collection.dart';
 
-import '../configuration/parameters.dart';
-import '../features/neighbor_edge.dart';
-import 'minutia_pair.dart';
-import 'pairing_graph.dart';
+import 'package:dartafis/src/configuration/parameters.dart';
+import 'package:dartafis/src/features/neighbor_edge.dart';
+import 'package:dartafis/src/matcher/minutia_pair.dart';
+import 'package:dartafis/src/matcher/pairing_graph.dart';
 
 final double _complementaryMaxAngleError = complementary(maxAngleError);
 
+/// Encontra pares de minúcias correspondentes entre duas listas de
+/// arestas vizinhas.
+///
+/// - [pstar] - Lista de arestas vizinhas da amostra de pesquisa.
+/// - [cstar] - Lista de arestas vizinhas do template de candidato.
+///
+/// Retorna uma lista de pares de minúcias correspondentes.
 List<MinutiaPair> _matchPairs(
   List<NeighborEdge> pstar,
   List<NeighborEdge> cstar,
 ) {
   final results = <MinutiaPair>[];
-  int start = 0;
-  int end = 0;
+  var start = 0;
+  var end = 0;
   for (final cedge in cstar) {
     while (start < pstar.length &&
         pstar[start].length < cedge.length - maxDistanceError) {
@@ -27,17 +34,19 @@ List<MinutiaPair> _matchPairs(
       end++;
     }
 
-    for (int pindex = start; pindex < end; pindex++) {
+    for (var pindex = start; pindex < end; pindex++) {
       final pedge = pstar[pindex];
       final rdiff = difference(pedge.referenceAngle, cedge.referenceAngle);
       if (rdiff <= maxAngleError || rdiff >= _complementaryMaxAngleError) {
         final ndiff = difference(pedge.neighborAngle, cedge.neighborAngle);
         if (ndiff <= maxAngleError || ndiff >= _complementaryMaxAngleError) {
-          results.add(MinutiaPair(
-            probe: pedge.neighbor,
-            candidate: cedge.neighbor,
-            distance: cedge.length,
-          ));
+          results.add(
+            MinutiaPair(
+              probe: pedge.neighbor,
+              candidate: cedge.neighbor,
+              distance: cedge.length,
+            ),
+          );
         }
       }
     }
@@ -45,6 +54,12 @@ List<MinutiaPair> _matchPairs(
   return results;
 }
 
+/// Coleta arestas correspondentes e as adiciona à fila de prioridade.
+///
+/// - [pedges] - Lista de listas de arestas vizinhas da amostra de pesquisa.
+/// - [cedges] - Lista de listas de arestas vizinhas do template de candidato.
+/// - [pairing] - Grafo de pareamento.
+/// - [queue] - Fila de prioridade de pares de minúcias.
 void _collectEdges(
   List<List<NeighborEdge>> pedges,
   List<List<NeighborEdge>> cedges,
@@ -56,8 +71,9 @@ void _collectEdges(
   final pstar = pedges[reference.probe];
   final cstar = cedges[reference.candidate];
   for (final pair in _matchPairs(pstar, cstar)) {
-    pair.probeRef = reference.probe;
-    pair.candidateRef = reference.candidate;
+    pair
+      ..probeRef = reference.probe
+      ..candidateRef = reference.candidate;
     if (pairing.byCandidate[pair.candidate] == null &&
         pairing.byProbe[pair.probe] == null) {
       queue.add(pair);
@@ -67,6 +83,11 @@ void _collectEdges(
   }
 }
 
+/// Remove pares de minúcias já pareados da fila de prioridade e adiciona
+/// suporte a eles.
+///
+/// - [pairing] - Grafo de pareamento.
+/// - [queue] - Fila de prioridade de pares de minúcias.
 void _skipPaired(
   PairingGraph pairing,
   PriorityQueue<MinutiaPair> queue,
@@ -78,6 +99,14 @@ void _skipPaired(
   }
 }
 
+/// Realiza a correspondência de pares de minúcias entre duas listas de 
+/// arestas vizinhas.
+///
+/// - [pedges] - Lista de listas de arestas vizinhas da amostra de pesquisa.
+/// - [cedges] - Lista de listas de arestas vizinhas do template de candidato.
+/// - [pairing] - Grafo de pareamento.
+/// - [root] - Par de minúcias raiz.
+/// - [queue] - Fila de prioridade de pares de minúcias.
 void crawl(
   List<List<NeighborEdge>> pedges,
   List<List<NeighborEdge>> cedges,
