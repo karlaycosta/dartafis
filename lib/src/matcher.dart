@@ -26,9 +26,7 @@ final class SearchMatcher {
   ///
   /// O parâmetro [probe] é um [SearchTemplate] que será usado
   /// para inicializar o matcher.
-  SearchMatcher(SearchTemplate probe)
-      : search = probe,
-        hash = build(probe);
+  SearchMatcher(SearchTemplate probe) : search = probe, hash = build(probe);
 
   /// Um template usado para realizar operações de busca.
   final SearchTemplate search;
@@ -51,6 +49,8 @@ final class SearchMatcher {
   ///
   /// Retorna um [Future<double>] que completa com a pontuação da
   /// correspondência.
+  @pragma('vm:align-loops')
+  @pragma('vm:unsafe:no-interrupts')
   Future<double> match(SearchTemplate candidate) async {
     try {
       return await findMatch(this, candidate);

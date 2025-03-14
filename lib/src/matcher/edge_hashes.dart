@@ -36,7 +36,9 @@ bool matching(EdgeShape probe, EdgeShape candidate) {
   final referenceDelta =
       difference(probe.referenceAngle, candidate.referenceAngle);
   if (referenceDelta > maxAngleError &&
-      referenceDelta < _complementaryMaxAngleError) return false;
+      referenceDelta < _complementaryMaxAngleError) {
+    return false;
+  }
 
   final neighborDelta =
       difference(probe.neighborAngle, candidate.neighborAngle);
@@ -103,7 +105,7 @@ Set<int> _coverage(EdgeShape edge) {
 /// arestas e os valores são listas de arestas indexadas.
 Map<int, List<IndexedEdge>> build(SearchTemplate template) {
   final map = <int, List<IndexedEdge>>{};
-  final length = template.minutiae.length;
+  final length = template.minutiae.length; // Cache for
   for (var reference = 0; reference < length; reference++) {
     for (var neighbor = 0; neighbor < length; neighbor++) {
       if (reference == neighbor) continue;

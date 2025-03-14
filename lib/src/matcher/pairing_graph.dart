@@ -1,6 +1,5 @@
 import 'package:dartafis/dartafis.dart';
 import 'package:dartafis/src/matcher/minutia_pair.dart';
-import 'package:dartafis/src/templates/search_template.dart';
 
 /// A classe `PairingGraph` gerencia a correspondência de pares de minúcias
 /// entre uma amostra de pesquisa e um template de candidato.

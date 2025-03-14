@@ -22,15 +22,15 @@ List<MinutiaPair> _matchPairs(
   var start = 0;
   var end = 0;
   for (final cedge in cstar) {
-    while (start < pstar.length &&
-        pstar[start].length < cedge.length - maxDistanceError) {
+    final length = pstar.length; // Cache for 
+    final cLength = cedge.length; // Cache for 
+    while (start < length && pstar[start].length < cLength - maxDistanceError) {
       start++;
     }
 
     if (end < start) end = start;
 
-    while (end < pstar.length &&
-        pstar[end].length <= cedge.length + maxDistanceError) {
+    while (end < length && pstar[end].length <= cLength + maxDistanceError) {
       end++;
     }
 
@@ -44,7 +44,7 @@ List<MinutiaPair> _matchPairs(
             MinutiaPair(
               probe: pedge.neighbor,
               candidate: cedge.neighbor,
-              distance: cedge.length,
+              distance: cLength,
             ),
           );
         }
@@ -88,10 +88,7 @@ void _collectEdges(
 ///
 /// - [pairing] - Grafo de pareamento.
 /// - [queue] - Fila de prioridade de pares de minúcias.
-void _skipPaired(
-  PairingGraph pairing,
-  PriorityQueue<MinutiaPair> queue,
-) {
+void _skipPaired(PairingGraph pairing, PriorityQueue<MinutiaPair> queue) {
   while (queue.isNotEmpty &&
       (pairing.byProbe[queue.first.probe] != null ||
           pairing.byCandidate[queue.first.candidate] != null)) {
@@ -99,7 +96,7 @@ void _skipPaired(
   }
 }
 
-/// Realiza a correspondência de pares de minúcias entre duas listas de 
+/// Realiza a correspondência de pares de minúcias entre duas listas de
 /// arestas vizinhas.
 ///
 /// - [pedges] - Lista de listas de arestas vizinhas da amostra de pesquisa.

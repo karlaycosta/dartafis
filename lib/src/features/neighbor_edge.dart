@@ -18,49 +18,35 @@ final class NeighborEdge extends EdgeShape {
   final int neighbor;
 }
 
-/// Calcula o quadrado de um valor inteiro.
-///
-/// - [value]: O valor a ser elevado ao quadrado.
-/// - Retorna o quadrado do valor fornecido.
-int _sq(int value) => value * value;
-
 /// Constrói uma tabela de arestas vizinhas a partir de uma lista de minúcias.
 ///
 /// - [minutiae]: Lista de minúcias.
 /// - Retorna uma lista de listas de `NeighborEdge`, onde cada lista interna
 ///   representa as arestas vizinhas de uma minúcia de referência.
 List<List<NeighborEdge>> buildTable(List<FeatureMinutia> minutiae) {
-  final edges = List<List<NeighborEdge>>.generate(
-    minutiae.length,
-    (_) => [],
-    growable: false,
-  );
-  final allSqDistances = List<int>.generate(
-    minutiae.length,
-    (_) => 0,
-    growable: false,
-  );
+  final minutiaeLength = minutiae.length; // Cache for
+  final edges = List<List<NeighborEdge>>.filled(minutiaeLength, []);
+  final allSqDistances = List<int>.filled(minutiaeLength, 0);
   final star = <NeighborEdge>[];
-
-  for (var reference = 0; reference < edges.length; ++reference) {
+  for (var reference = 0; reference < minutiaeLength; reference++) {
     final rminutia = minutiae[reference];
     var maxSqDistance = 0x7fffffffffffffff;
 
-    if (minutiae.length - 1 > edgeTableNeighbors) {
-      for (var neighbor = 0; neighbor < minutiae.length; ++neighbor) {
+    if (minutiaeLength - 1 > edgeTableNeighbors) {
+      for (var neighbor = 0; neighbor < minutiaeLength; neighbor++) {
         final nminutia = minutiae[neighbor];
         allSqDistances[neighbor] =
-            _sq(rminutia.x - nminutia.x) + _sq(rminutia.y - nminutia.y);
+            sq(rminutia.x - nminutia.x) + sq(rminutia.y - nminutia.y);
       }
       allSqDistances.sort();
       maxSqDistance = allSqDistances[edgeTableNeighbors];
     }
 
-    for (var neighbor = 0; neighbor < minutiae.length; ++neighbor) {
+    for (var neighbor = 0; neighbor < minutiaeLength; neighbor++) {
       if (neighbor != reference) {
         final nminutia = minutiae[neighbor];
         final sqDistance =
-            _sq(rminutia.x - nminutia.x) + _sq(rminutia.y - nminutia.y);
+            sq(rminutia.x - nminutia.x) + sq(rminutia.y - nminutia.y);
         if (sqDistance <= maxSqDistance) {
           star.add(NeighborEdge(minutiae, reference, neighbor));
         }
@@ -80,6 +66,5 @@ List<List<NeighborEdge>> buildTable(List<FeatureMinutia> minutiae) {
     edges[reference] = star.toList();
     star.clear();
   }
-
   return edges;
 }

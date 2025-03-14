@@ -1,6 +1,5 @@
 import 'package:collection/collection.dart';
 import 'package:dartafis/dartafis.dart';
-import 'package:dartafis/src/configuration/parameters.dart';
 import 'package:dartafis/src/features/edge_shape.dart';
 import 'package:dartafis/src/matcher/edge_hashes.dart';
 import 'package:dartafis/src/matcher/edge_spider.dart';
@@ -9,7 +8,6 @@ import 'package:dartafis/src/matcher/pairing_graph.dart';
 import 'package:dartafis/src/matcher/root_list.dart';
 import 'package:dartafis/src/matcher/scoring.dart';
 import 'package:dartafis/src/matcher/scoring_data.dart';
-import 'package:dartafis/src/templates/search_template.dart';
 
 /// Classe que representa o mecanismo de correspondência.
 ///
@@ -52,7 +50,8 @@ Future<double> findMatch(SearchMatcher probe, SearchTemplate candidate) async {
     final probeEdges = probe.search.edges;
     final candidateEdges = candidate.edges;
 
-    for (var i = 0; i < matcher.roots.pairs.length; i++) {
+    final length = matcher.roots.pairs.length; // Cache for
+    for (var i = 0; i < length; i++) {
       crawl(
         probeEdges,
         candidateEdges,
@@ -68,6 +67,7 @@ Future<double> findMatch(SearchMatcher probe, SearchTemplate candidate) async {
       }
       matcher.pairing.clear();
     }
+
     if (best >= 0) {
       crawl(
         probeEdges,
@@ -101,13 +101,12 @@ Future<void> _enumerate(
   var tried = 0;
 
   for (final shortEdges in {false, true}) {
-    for (var period = 1; period < cminutiae.length; period++) {
+    final length = cminutiae.length; // Cache for
+    for (var period = 1; period < length; period++) {
       for (var phase = 0; phase <= period; phase++) {
-        for (var creference = phase;
-            creference < cminutiae.length;
-            creference += period + 1) {
-          final cneighbor = (creference + period) % cminutiae.length;
-          final cedge = EdgeShape(cminutiae[creference], cminutiae[cneighbor]);
+        for (var cRef = phase; cRef < length; cRef += period + 1) {
+          final cneighbor = (cRef + period) % length;
+          final cedge = EdgeShape(cminutiae[cRef], cminutiae[cneighbor]);
 
           if ((cedge.length >= minRootEdgeLength) ^ shortEdges) {
             final matches = probe.hash[hash(cedge)];
@@ -115,14 +114,11 @@ Future<void> _enumerate(
             if (matches != null) {
               for (final match in matches) {
                 if (matching(match, cedge)) {
-                  final duplicateKey = (match.reference << 16) | creference;
+                  final duplicateKey = (match.reference << 16) | cRef;
 
                   if (roots.duplicates.add(duplicateKey)) {
                     roots.pairs.add(
-                      MinutiaPair(
-                        probe: match.reference,
-                        candidate: creference,
-                      ),
+                      MinutiaPair(probe: match.reference, candidate: cRef),
                     );
                   }
                   if (++tried >= maxTriedRoots) return;

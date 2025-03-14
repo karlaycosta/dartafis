@@ -1,5 +1,55 @@
 import 'dart:math' as math;
 
+const int blockSize = 15;
+const int histogramDepth = 256;
+const double clippedContrast = 0.08;
+const double minAbsoluteContrast = 17 / 255;
+const double minRelativeContrast = 0.34;
+const int relativeContrastSample = 168568;
+const double relativeContrastPercentile = 0.49;
+const int maskVoteRadius = 7;
+const double maskVoteMajority = 0.51;
+const int maskVoteBorderDistance = 4;
+const int blockErrorsVoteRadius = 1;
+const double blockErrorsVoteMajority = 0.7;
+const int blockErrorsVoteBorderDistance = 4;
+const double maxEqualizationScaling = 3.99;
+const double minEqualizationScaling = 0.25;
+const double minOrientationRadius = 2;
+const double maxOrientationRadius = 6;
+const int orientationSplit = 50;
+const int orientationsChecked = 20;
+const int orientationSmoothingRadius = 1;
+const int parallelSmoothingResolution = 32;
+const int parallelSmoothingRadius = 7;
+const double parallelSmoothingStep = 1.59;
+const int orthogonalSmoothingResolution = 11;
+const int orthogonalSmoothingRadius = 4;
+const double orthogonalSmoothingStep = 1.11;
+const int binarizedVoteRadius = 2;
+const double binarizedVoteMajority = 0.61;
+const int binarizedVoteBorderDistance = 17;
+const int innerMaskBorderDistance = 14;
+const double maskDisplacement = 10.06;
+const int minutiaCloudRadius = 20;
+const int maxCloudSize = 4;
+const int maxMinutiae = 100;
+const int sortByNeighbor = 5;
+
+const int thinningIterations = 26;
+const int maxPoreArm = 41;
+const int shortestJoinedEnding = 7;
+const int maxRuptureSize = 5;
+const int maxGapSize = 20;
+const int gapAngleOffset = 22;
+const int toleratedGapOverlap = 2;
+const int minTailLength = 21;
+const int minFragmentLength = 22;
+
+const double maxGapAngle = 45 * 0.017453292519943295;
+const int ridgeDirectionSample = 21;
+const int ridgeDirectionSkip = 1;
+
 /// Número de vizinhos na tabela de arestas.
 const int edgeTableNeighbors = 9;
 
@@ -93,6 +143,12 @@ double complementary(double angle) {
   final complement = pi2 - angle;
   return complement < pi2 ? complement : complement - pi2;
 }
+
+/// Calcula o quadrado de um valor inteiro.
+///
+/// - [value]: O valor a ser elevado ao quadrado.
+/// - Retorna o quadrado do valor fornecido.
+int sq(int value) => value * value;
 
 /// Enumeração dos tipos de minúcia em uma impressão digital.
 ///

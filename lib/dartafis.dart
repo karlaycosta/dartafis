@@ -1,2 +1,22 @@
 export 'src/matcher.dart';
 export 'src/template.dart';
+export 'src/templates/search_template.dart';
+export 'src/finger_image.dart';
+export 'src/primitives/block_map.dart';
+export 'src/primitives/double_matrix.dart';
+export 'src/primitives/boolean_matrix.dart';
+export 'src/primitives/histogram_cube.dart';
+export 'src/extractor/image_resizer.dart';
+
+export 'src/configuration/parameters.dart';
+export 'src/extractor/binarized_image.dart';
+export 'src/extractor/block_orientations.dart';
+export 'src/extractor/image_equalization.dart';
+export 'src/extractor/local_histograms.dart';
+export 'src/extractor/minutiae/minutia_collector.dart';
+export 'src/extractor/minutiae/top_minutiae_filter.dart';
+export 'src/extractor/oriented_smoothing.dart';
+export 'src/extractor/segmentation_mask.dart';
+export 'src/extractor/skeletons/skeleton_filters.dart';
+export 'src/extractor/skeletons/skeletons.dart';
+export 'src/features/skeleton.dart';

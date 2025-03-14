@@ -1,5 +1,3 @@
-// ignore_for_file: parameter_assignments
-
 import 'dart:math' as math;
 
 import 'package:dartafis/src/configuration/parameters.dart';
@@ -63,18 +61,12 @@ class EdgeShape {
   static const polarCacheLength = polarCacheRadius * polarCacheRadius;
 
   /// Cache de distâncias polares.
-  static final List<int> polarDistanceCache = List<int>.generate(
-    polarCacheLength,
-    (_) => 0,
-    growable: false,
-  );
+  static final List<int> polarDistanceCache =
+      List<int>.filled(polarCacheLength, 0);
 
   /// Cache de ângulos polares.
-  static final List<double> polarAngleCache = List<double>.generate(
-    polarCacheLength,
-    (_) => 0.0,
-    growable: false,
-  );
+  static final List<double> polarAngleCache =
+      List<double>.filled(polarCacheLength, 0.0);
 
   /// Comprimento da aresta.
   late final int length;

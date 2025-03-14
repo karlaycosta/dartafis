@@ -4,11 +4,15 @@ import 'package:dartafis/src/features/neighbor_edge.dart';
 /// Um typedef para um template de característica que contém as seguintes
 /// propriedades:
 ///
-/// - `x` (int): A coordenada x da característica.
-/// - `y` (int): A coordenada y da característica.
-/// - `minutiae` (List<FeatureMinutia>): Uma lista de minúcias associadas
+/// - `width` (int): A largura da característica.
+/// - `height` (int): A altura da característica.
+/// - `minutiae` (List`<FeatureMinutia>`): Uma lista de minúcias associadas
 ///   à característica.
-typedef FeatureTemplate = ({int x, int y, List<FeatureMinutia> minutiae});
+typedef FeatureTemplate = ({
+  int width,
+  int height,
+  List<FeatureMinutia> minutiae,
+});
 
 /// Uma classe template para funcionalidade de busca.
 ///
@@ -26,32 +30,32 @@ final class SearchTemplate {
   ///   as características necessárias para criar um [SearchTemplate].
   factory SearchTemplate(FeatureTemplate features) {
     final minutiae = features.minutiae;
-    final keys = <FeatureMinutia, int>{
-      for (final m in minutiae) m: ((m.x * 1610612741) + m.y) * 1610612741,
-    };
+    // final keys = <FeatureMinutia, int>{
+    //   for (final m in minutiae) m: ((m.x * 161) + m.y) * 161, // 1610612741
+    // };
 
-    minutiae.sort((a, b) {
-      final keyA = keys[a]!;
-      final keyB = keys[b]!;
+    // minutiae.sort((a, b) {
+    //   final keyA = keys[a]!;
+    //   final keyB = keys[b]!;
 
-      var result = keyA.compareTo(keyB);
-      if (result != 0) return result;
+    //   // var result = keyA.compareTo(keyB);
+    //   // if (result != 0) return result;
 
-      result = a.x.compareTo(b.x);
-      if (result != 0) return result;
+    //   // result = a.x.compareTo(b.x);
+    //   // if (result != 0) return result;
 
-      result = a.y.compareTo(b.y);
-      if (result != 0) return result;
+    //   // result = a.y.compareTo(b.y);
+    //   // if (result != 0) return result;
 
-      result = a.direction.compareTo(b.direction);
-      if (result != 0) return result;
+    //   // result = a.direction.compareTo(b.direction);
+    //   // if (result != 0) return result;
 
-      return a.type.index.compareTo(b.type.index);
-    });
+    //   // return a.type.index.compareTo(b.type.index);
+    //   return keyA.compareTo(keyB);
+    // });
     final edges = buildTable(minutiae);
-    return SearchTemplate._(features.x, features.y, minutiae, edges);
+    return SearchTemplate._(features.width, features.height, minutiae, edges);
   }
-
   const SearchTemplate._(this.width, this.height, this.minutiae, this.edges);
 
   /// A largura do template de busca.
