@@ -12,7 +12,7 @@ final class IndexedEdge extends EdgeShape {
   /// - [_reference]: Índice da minúcia de referência.
   /// - [_neighbor]: Índice da minúcia vizinha.
   IndexedEdge(List<FeatureMinutia> minutiae, this._reference, this._neighbor)
-      : super(minutiae[_reference], minutiae[_neighbor]);
+    : super(minutiae[_reference], minutiae[_neighbor]);
 
   /// Índice da minúcia de referência.
   final int _reference;

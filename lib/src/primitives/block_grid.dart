@@ -10,10 +10,10 @@ final class BlockGrid {
   final Uint16List y;
 
   BlockGrid(IntPoint size)
-      : blocks = size,
-        corners = IntPoint(size.x + 1, size.y + 1),
-        x = Uint16List(size.x + 1),
-        y = Uint16List(size.y + 1);
+    : blocks = size,
+      corners = IntPoint(size.x + 1, size.y + 1),
+      x = Uint16List(size.x + 1),
+      y = Uint16List(size.y + 1);
 
   IntPoint corner(int x, int y) => IntPoint(this.x[x], this.y[y]);
 

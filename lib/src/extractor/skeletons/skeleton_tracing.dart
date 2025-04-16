@@ -31,7 +31,9 @@ List<IntPoint> findMinutiae(BooleanMatrix thinned) {
   return result;
 }
 
-HashMap<IntPoint, List<IntPoint>> linkNeighboringMinutiae(List<IntPoint> minutiae) {
+HashMap<IntPoint, List<IntPoint>> linkNeighboringMinutiae(
+  List<IntPoint> minutiae,
+) {
   final HashMap<IntPoint, List<IntPoint>> linking = HashMap();
   final neighbors = IntPoint.cornerNeighbors;
   final length = neighbors.length;
@@ -110,9 +112,10 @@ void traceRidges(
       if (thinned.getF(start.x, start.y, false) &&
           minutiaePoints.containsKey(start) == false &&
           leads.contains(start) == false) {
-        final ridge = SkeletonRidge()
-          ..points.add(minutiaPoint)
-          ..points.add(start);
+        final ridge =
+            SkeletonRidge()
+              ..points.add(minutiaPoint)
+              ..points.add(start);
         // final ridges = <IntPoint>[minutiaPoint, start];
         var previous = minutiaPoint;
         var current = start;

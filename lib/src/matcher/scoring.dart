@@ -64,10 +64,14 @@ void compute(
 
   for (var i = 1; i < pairingCount; i++) {
     final pair = pairing.tree[i] ?? (throw Exception());
-    final probeEdge =
-        EdgeShape(pminutiae[pair.probeRef], pminutiae[pair.probe]);
-    final candidateEdge =
-        EdgeShape(cminutiae[pair.candidateRef], cminutiae[pair.candidate]);
+    final probeEdge = EdgeShape(
+      pminutiae[pair.probeRef],
+      pminutiae[pair.probe],
+    );
+    final candidateEdge = EdgeShape(
+      cminutiae[pair.candidateRef],
+      cminutiae[pair.candidate],
+    );
     score
       ..distanceErrorSum += match.max(
         innerDistanceRadius,
@@ -87,7 +91,8 @@ void compute(
       maxDistanceError * match.max<int>(0, pairingCount - 1);
   score
     ..distanceAccuracySum = distanceErrorPotential - score.distanceErrorSum
-    ..distanceAccuracyScore = distanceAccuracyScore *
+    ..distanceAccuracyScore =
+        distanceAccuracyScore *
         (distanceErrorPotential > 0
             ? score.distanceAccuracySum / distanceErrorPotential
             : 0);
@@ -96,11 +101,13 @@ void compute(
       maxAngleError * match.max(0, pairingCount - 1) * 2;
   score
     ..angleAccuracySum = angleErrorPotential - score.angleErrorSum
-    ..angleAccuracyScore = angleAccuracyScore *
+    ..angleAccuracyScore =
+        angleAccuracyScore *
         (angleErrorPotential > 0
             ? score.angleAccuracySum / angleErrorPotential
             : 0)
-    ..totalScore = score.minutiaScore +
+    ..totalScore =
+        score.minutiaScore +
         score.minutiaFractionScore +
         score.supportedMinutiaScore +
         score.edgeScore +
@@ -116,24 +123,43 @@ double _distance(double first, double second) {
 }
 
 double _shape(double raw) => switch (raw) {
-      < thresholdFmrMax => 0,
-      < thresholdFmr_2 =>
-        _interpolate(raw, thresholdFmrMax, thresholdFmr_2, 0, 3),
-      < thresholdFmr_10 =>
-        _interpolate(raw, thresholdFmr_2, thresholdFmr_10, 3, 7),
-      < thresholdFmr_100 =>
-        _interpolate(raw, thresholdFmr_10, thresholdFmr_100, 10, 10),
-      < thresholdFmr_1000 =>
-        _interpolate(raw, thresholdFmr_100, thresholdFmr_1000, 20, 10),
-      < thresholdFmr_10_000 =>
-        _interpolate(raw, thresholdFmr_1000, thresholdFmr_10_000, 30, 10),
-      < thresholdFmr_100_000 =>
-        _interpolate(raw, thresholdFmr_10_000, thresholdFmr_100_000, 40, 10),
-      _ => (raw - thresholdFmr_100_000) /
-              (thresholdFmr_100_000 - thresholdFmr_100) *
-              30 +
-          50,
-    };
+  < thresholdFmrMax => 0,
+  < thresholdFmr_2 => _interpolate(raw, thresholdFmrMax, thresholdFmr_2, 0, 3),
+  < thresholdFmr_10 => _interpolate(raw, thresholdFmr_2, thresholdFmr_10, 3, 7),
+  < thresholdFmr_100 => _interpolate(
+    raw,
+    thresholdFmr_10,
+    thresholdFmr_100,
+    10,
+    10,
+  ),
+  < thresholdFmr_1000 => _interpolate(
+    raw,
+    thresholdFmr_100,
+    thresholdFmr_1000,
+    20,
+    10,
+  ),
+  < thresholdFmr_10_000 => _interpolate(
+    raw,
+    thresholdFmr_1000,
+    thresholdFmr_10_000,
+    30,
+    10,
+  ),
+  < thresholdFmr_100_000 => _interpolate(
+    raw,
+    thresholdFmr_10_000,
+    thresholdFmr_100_000,
+    40,
+    10,
+  ),
+  _ =>
+    (raw - thresholdFmr_100_000) /
+            (thresholdFmr_100_000 - thresholdFmr_100) *
+            30 +
+        50,
+};
 
 double _interpolate(
   double raw,
@@ -141,5 +167,4 @@ double _interpolate(
   double max,
   double start,
   double length,
-) =>
-    (raw - min) / (max - min) * length + start;
+) => (raw - min) / (max - min) * length + start;

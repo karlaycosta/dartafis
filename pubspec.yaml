@@ -9,7 +9,7 @@ topics:
   - matcher
 
 environment:
-  sdk: ^3.7.0
+  sdk: ^3.7.2
 
 dependencies:
   collection: ^1.19.1

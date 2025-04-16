@@ -1,11 +1,10 @@
-/// A classe `MinutiaPair` representa um par de minúcias utilizado no processo 
+/// A classe `MinutiaPair` representa um par de minúcias utilizado no processo
 /// de correspondência.
 ///
-/// Esta classe armazena informações sobre as minúcias de referência e 
+/// Esta classe armazena informações sobre as minúcias de referência e
 /// candidatas, incluindo suas posições, distância entre elas e o número de
 /// arestas de suporte.
 final class MinutiaPair {
-
   /// Cria uma nova instância de `MinutiaPair`.
   ///
   /// Os parâmetros opcionais permitem inicializar os valores das propriedades.

@@ -67,13 +67,17 @@ BooleanMatrix getRelativeContrastMask(DoubleMatrix contrast, BlockMap blocks) {
   }
   sortedContrast.sort((a, b) => b.compareTo(a));
   final pixelsPerBlock = blocks.area ~/ blocks.primary.blocks.getArea();
-  final sampleCount =
-      math.min(sortedContrast.length, relativeContrastSample ~/ pixelsPerBlock);
-  final consideredBlocks =
-      math.max((sampleCount * relativeContrastPercentile).round(), 1);
+  final sampleCount = math.min(
+    sortedContrast.length,
+    relativeContrastSample ~/ pixelsPerBlock,
+  );
+  final consideredBlocks = math.max(
+    (sampleCount * relativeContrastPercentile).round(),
+    1,
+  );
   final averageContrast =
       sortedContrast.take(consideredBlocks).reduce((a, b) => a + b) /
-          consideredBlocks;
+      consideredBlocks;
   final limit = averageContrast * minRelativeContrast;
   final width = blocks.primary.blocks.x;
   final height = blocks.primary.blocks.y;

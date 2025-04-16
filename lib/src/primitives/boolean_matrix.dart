@@ -6,12 +6,8 @@ class BooleanMatrix {
   final int height;
   final List<bool> cells;
 
-  BooleanMatrix({
-    required this.width,
-    required this.height,
-    List<bool>? cells,
-  }) : cells = cells ??
-            List.filled(width * height, false);
+  BooleanMatrix({required this.width, required this.height, List<bool>? cells})
+    : cells = cells ?? List.filled(width * height, false);
 
   void set(int x, int y, bool value) => cells[y * width + x] = value;
 

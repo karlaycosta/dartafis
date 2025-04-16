@@ -14,11 +14,11 @@ DoubleMatrix equalize(
   HistogramCube histogram,
   BooleanMatrix blockMask,
 ) {
-  final rgMin = -1.0;
-  final rgMax = 1.0;
-  final rgSize = rgMax - rgMin;
-  final widMax = rgSize / 256 * maxEqualizationScaling;
-  final widMin = rgSize / 256 * minEqualizationScaling;
+  const rgMin = -1.0;
+  const rgMax = 1.0;
+  const rgSize = rgMax - rgMin;
+  const widMax = rgSize / 256 * maxEqualizationScaling;
+  const widMin = rgSize / 256 * minEqualizationScaling;
   final bins = histogram.bins;
   final limMin = Float64List(bins);
   final limMax = Float64List(bins);

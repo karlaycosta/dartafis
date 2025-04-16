@@ -4,8 +4,6 @@ import 'package:dartafis/src/primitives/double_angle.dart';
 import 'package:dartafis/src/primitives/int_point.dart';
 import 'package:dartafis/src/primitives/reversed_list.dart';
 
-
-
 final class SkeletonRidge {
   late final List<IntPoint> points;
   late final SkeletonRidge reversed;
@@ -19,9 +17,9 @@ final class SkeletonRidge {
   }
 
   SkeletonRidge.reverse(this.reversed)
-      : start = reversed.end,
-        end = reversed.start,
-        points = ReversedList(reversed.points);
+    : start = reversed.end,
+      end = reversed.start,
+      points = ReversedList(reversed.points);
 
   void setStart(SkeletonMinutia? value) {
     if (start != value) {

@@ -40,7 +40,11 @@ BooleanMatrix binarize(
 void cleanup(BooleanMatrix binary, BooleanMatrix mask) {
   final width = binary.width;
   final height = binary.height;
-  final inverted = BooleanMatrix(width: width, height: height, cells: binary.cells.toList());
+  final inverted = BooleanMatrix(
+    width: width,
+    height: height,
+    cells: binary.cells.toList(),
+  );
   inverted.invert();
   final islands = voteFilter(
     inverted,

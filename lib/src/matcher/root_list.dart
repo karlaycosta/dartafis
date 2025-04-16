@@ -8,7 +8,7 @@ import 'package:dartafis/src/matcher/minutia_pair.dart';
 final class RootList {
   /// Uma lista de pares de minúcias.
   final List<MinutiaPair> pairs = [];
-  
+
   /// Um conjunto de identificadores de duplicatas.
   final Set<int> duplicates = {};
 

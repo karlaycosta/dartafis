@@ -160,7 +160,7 @@ enum MinutiaType {
   ending,
 
   /// Minúcia de bifurcação.
-  bifurcation
+  bifurcation,
 }
 
 /// Tipo definido para uma minúcia de característica.

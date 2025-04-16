@@ -22,8 +22,9 @@ final class Matcher {
   late final pairing = PairingGraph();
 
   /// Fila de prioridade para armazenar pares de minúcias.
-  final queue =
-      PriorityQueue<MinutiaPair>((a, b) => a.distance.compareTo(b.distance));
+  final queue = PriorityQueue<MinutiaPair>(
+    (a, b) => a.distance.compareTo(b.distance),
+  );
 
   /// Dados de pontuação utilizados na correspondência.
   final score = ScoringData();

@@ -33,15 +33,19 @@ bool matching(EdgeShape probe, EdgeShape candidate) {
   final lengthDelta = (probe.length - candidate.length).abs();
   if (lengthDelta > maxDistanceError) return false;
 
-  final referenceDelta =
-      difference(probe.referenceAngle, candidate.referenceAngle);
+  final referenceDelta = difference(
+    probe.referenceAngle,
+    candidate.referenceAngle,
+  );
   if (referenceDelta > maxAngleError &&
       referenceDelta < _complementaryMaxAngleError) {
     return false;
   }
 
-  final neighborDelta =
-      difference(probe.neighborAngle, candidate.neighborAngle);
+  final neighborDelta = difference(
+    probe.neighborAngle,
+    candidate.neighborAngle,
+  );
   return neighborDelta <= maxAngleError ||
       neighborDelta >= _complementaryMaxAngleError;
 }
@@ -81,12 +85,16 @@ Set<int> _coverage(EdgeShape edge) {
 
   final coverage = <int>{};
   for (var lengthBin = minLengthBin; lengthBin <= maxLengthBin; lengthBin++) {
-    for (var referenceBin = minReferenceBin;
-        referenceBin != endReferenceBin;
-        referenceBin = (referenceBin + 1) % _angleBins) {
-      for (var neighborBin = minNeighborBin;
-          neighborBin != endNeighborBin;
-          neighborBin = (neighborBin + 1) % _angleBins) {
+    for (
+      var referenceBin = minReferenceBin;
+      referenceBin != endReferenceBin;
+      referenceBin = (referenceBin + 1) % _angleBins
+    ) {
+      for (
+        var neighborBin = minNeighborBin;
+        neighborBin != endNeighborBin;
+        neighborBin = (neighborBin + 1) % _angleBins
+      ) {
         coverage.add((referenceBin << 24) + (neighborBin << 16) + lengthBin);
       }
     }

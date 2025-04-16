@@ -61,12 +61,16 @@ class EdgeShape {
   static const polarCacheLength = polarCacheRadius * polarCacheRadius;
 
   /// Cache de distâncias polares.
-  static final List<int> polarDistanceCache =
-      List<int>.filled(polarCacheLength, 0);
+  static final List<int> polarDistanceCache = List<int>.filled(
+    polarCacheLength,
+    0,
+  );
 
   /// Cache de ângulos polares.
-  static final List<double> polarAngleCache =
-      List<double>.filled(polarCacheLength, 0.0);
+  static final List<double> polarAngleCache = List<double>.filled(
+    polarCacheLength,
+    0.0,
+  );
 
   /// Comprimento da aresta.
   late final int length;

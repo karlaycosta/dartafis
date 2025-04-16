@@ -22,8 +22,8 @@ List<MinutiaPair> _matchPairs(
   var start = 0;
   var end = 0;
   for (final cedge in cstar) {
-    final length = pstar.length; // Cache for 
-    final cLength = cedge.length; // Cache for 
+    final length = pstar.length; // Cache for
+    final cLength = cedge.length; // Cache for
     while (start < length && pstar[start].length < cLength - maxDistanceError) {
       start++;
     }

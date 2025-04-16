@@ -25,7 +25,7 @@ final class IntPoint implements Comparable<IntPoint> {
     IntPoint(1, 0),
     IntPoint(-1, 1),
     IntPoint(0, 1),
-    IntPoint(1, 1)
+    IntPoint(1, 1),
   ];
 
   IntPoint plus(IntPoint other) => IntPoint(x + other.x, y + other.y);

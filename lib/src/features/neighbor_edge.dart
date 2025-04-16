@@ -12,7 +12,7 @@ final class NeighborEdge extends EdgeShape {
   /// - [reference]: Índice da minúcia de referência.
   /// - [neighbor]: Índice da minúcia vizinha.
   NeighborEdge(List<FeatureMinutia> minutiae, int reference, this.neighbor)
-      : super(minutiae[reference], minutiae[neighbor]);
+    : super(minutiae[reference], minutiae[neighbor]);
 
   /// Índice da minúcia vizinha.
   final int neighbor;

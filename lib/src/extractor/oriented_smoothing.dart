@@ -10,12 +10,15 @@ import 'package:dartafis/src/primitives/int_rect.dart';
 List<List<IntPoint>> lines(int resolution, int radius, double step) {
   final result = List<List<IntPoint>>.filled(resolution, []);
   final resolution2 = 2 * resolution;
-  for (int orientationIndex = 0;
-      orientationIndex < resolution;
-      orientationIndex++) {
+  for (
+    int orientationIndex = 0;
+    orientationIndex < resolution;
+    orientationIndex++
+  ) {
     final line = <IntPoint>[IntPoint.zero()];
-    final direction = double_angle
-        .toVector((pi2 * (2 * orientationIndex + 1) / resolution2) * 0.5);
+    final direction = double_angle.toVector(
+      (pi2 * (2 * orientationIndex + 1) / resolution2) * 0.5,
+    );
     for (double r = radius.toDouble(); r >= 0.5; r /= step) {
       final sample = direction.multiply(r).round();
       if (line.contains(sample) == false) {
@@ -45,10 +48,11 @@ DoubleMatrix smooth(
   for (var yi = 0; yi < height; yi++) {
     for (var xi = 0; xi < width; xi++) {
       if (mask.get(xi, yi)) {
-        final line = lines[double_angle.quantize(
-          double_angle.add(orientation.get(xi, yi), angle),
-          count,
-        )];
+        final line =
+            lines[double_angle.quantize(
+              double_angle.add(orientation.get(xi, yi), angle),
+              count,
+            )];
         final length = line.length;
         for (var i = 0; i < length; i++) {
           var target = blocks.primary.block(xi, yi);
@@ -106,5 +110,5 @@ DoubleMatrix orthogonal(
     orthogonalSmoothingRadius,
     orthogonalSmoothingStep,
   );
- return smooth(input, orientation, mask, blocks, pi, lines_);
+  return smooth(input, orientation, mask, blocks, pi, lines_);
 }

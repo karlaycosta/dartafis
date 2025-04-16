@@ -6,21 +6,21 @@ final class IntRect {
   final int y;
   final int width;
   final int height;
-  
+
   IntRect(this.x, this.y, this.width, this.height);
 
   IntRect.betweenXY(int startX, int startY, int endX, int endY)
-      : this(startX, startY, endX - startX, endY - startY);
+    : this(startX, startY, endX - startX, endY - startY);
 
   IntRect.around(int x, int y, int radius)
-      : this.betweenXY(x - radius, y - radius, x + radius + 1, y + radius + 1);
+    : this.betweenXY(x - radius, y - radius, x + radius + 1, y + radius + 1);
 
   IntRect intersect(IntRect other) => IntRect.betweenXY(
-        math.max(left, other.left),
-        math.max(top, other.top),
-        math.min(right, other.right),
-        math.min(bottom, other.bottom),
-      );
+    math.max(left, other.left),
+    math.max(top, other.top),
+    math.min(right, other.right),
+    math.min(bottom, other.bottom),
+  );
 
   IntRect move(IntPoint delta) =>
       IntRect(x + delta.x, y + delta.y, width, height);

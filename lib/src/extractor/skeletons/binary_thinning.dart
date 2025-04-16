@@ -45,7 +45,8 @@ List<NeighborhoodType> neighborhoodTypes() {
     final bc = (mask & 64) != 0;
     final br = (mask & 128) != 0;
     final count = bitCount(mask);
-    final diagonal = !tc && !cl && tl ||
+    final diagonal =
+        !tc && !cl && tl ||
         !cl && !bc && bl ||
         !bc && !cr && br ||
         !cr && !tc && tr;
@@ -105,7 +106,8 @@ BooleanMatrix thin(BooleanMatrix input, SkeletonType type) {
                     partial.get(x, y + 1) &&
                     partial.get(x - 1, y) &&
                     partial.get(x + 1, y))) {
-              final neighbors = (partial.get(x + 1, y + 1) ? 128 : 0) |
+              final neighbors =
+                  (partial.get(x + 1, y + 1) ? 128 : 0) |
                   (partial.get(x, y + 1) ? 64 : 0) |
                   (partial.get(x - 1, y + 1) ? 32 : 0) |
                   (partial.get(x + 1, y) ? 16 : 0) |

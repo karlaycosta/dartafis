@@ -47,7 +47,8 @@ List<ConsideredOrientation> plan() {
       } while (rep || sample.offset == zero || sample.offset.y < 0);
       final angle = double_angle.atan(sample.offset.toDouble());
       sample.orientation = double_angle.toVector(
-          double_angle.add(angle < pi ? 2 * angle : 2 * (angle - pi), pi));
+        double_angle.add(angle < pi ? 2 * angle : 2 * (angle - pi), pi),
+      );
       splits[y * orientationsChecked + x] = sample;
     }
   }
@@ -84,7 +85,7 @@ DoublePointMatrix compute(
     if (end - start > 0) {
       final (vStart, vEnd) = (
         primary.block(start, blockY).left,
-        primary.block(end - 1, blockY).right
+        primary.block(end - 1, blockY).right,
       );
       final blockTop = blocks.primary.block(0, blockY).top;
       final blockBottom = primary.block(0, blockY).bottom; // Cache
@@ -99,7 +100,7 @@ DoublePointMatrix compute(
           if (y - radius >= 0 && y + radius < input.height) {
             final (xStart, xEnd) = (
               math.max(radius, vStart),
-              math.min(input.width - radius, vEnd)
+              math.min(input.width - radius, vEnd),
             );
             for (int x = xStart; x < xEnd; x++) {
               final before = input.get(x - offsetX, y - offsetY);
