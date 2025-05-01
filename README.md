@@ -1,39 +1,42 @@
-<!-- 
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
+# Dartafis
 
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/tools/pub/writing-package-pages). 
+**Dartafis** é uma biblioteca para extração e processamento de características de impressões digitais, desenvolvida em Dart.  
+Este projeto é um **port da biblioteca [SourceAFIS](https://sourceafis.machinezoo.com/)**, adaptado para funcionar de forma nativa no ecossistema Dart e Flutter.
 
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/to/develop-packages). 
--->
+![Dart SDK](https://img.shields.io/badge/dart-3.0%2B-blue)
+![License: MIT](https://img.shields.io/badge/license-MIT-green)
 
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
+---
 
-## Features
+## ✨ Recursos
 
-TODO: List what your package can do. Maybe include images, gifs, or videos.
+- ✅ Redimensionamento de imagens para 500 DPI  
+- ✅ Equalização de histograma para melhorar contraste  
+- ✅ Binarização (preto e branco) para separar cristas e vales  
+- ✅ Extração de minúcias (bifurcações e terminações)  
+- ✅ Filtragem de minúcias redundantes e ruidosas  
+- ✅ Geração de templates biométricos (parcialmente compatível com ISO FMD)  
+- 🚧 *Matching (comparação de templates)* em desenvolvimento  
 
-## Getting started
+---
 
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
+## 📦 Pré-requisitos
 
-## Usage
+- Dart SDK **3.0** ou superior  
+- Familiaridade com manipulação de imagens e conceitos de biometria  
 
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder. 
+---
 
-```dart
-const like = 'sample';
+## 🚀 Instalação
+
+Adicione o Dartafis ao seu projeto no `pubspec.yaml`:
+
+```yaml
+dependencies:
+  dartafis:
+    git:
+      url: https://github.com/seu-usuario/dartafis.git
+      ref: main
 ```
-
-## Additional information
-
-TODO: Tell users more about the package: where to find more information, how to 
-contribute to the package, how to file issues, what response they can expect 
-from the package authors, and more.
+## Licença
+Este projeto está licenciado sob os termos da licença MIT. Veja o arquivo [LICENSE](https://github.com/karlaycosta/dartafis/blob/main/LICENCE) para mais informações.
