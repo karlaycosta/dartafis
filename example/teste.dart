@@ -47,9 +47,9 @@ List<List<NeighborEdge>> buildTable(List<FeatureMinutia> minutiae) {
   final edges = List<List<NeighborEdge>>.filled(minutiaeLength, []);
   final allSqDistances = List<int>.filled(minutiaeLength, 0);
   final star = <NeighborEdge>[];
-  final maxNeighbors = minutiaeLength > edgeTableNeighbors
-      ? edgeTableNeighbors
-      : minutiaeLength - 1;
+  // final maxNeighbors = minutiaeLength > edgeTableNeighbors
+  //     ? edgeTableNeighbors
+  //     : minutiaeLength - 1;
   int getMax(List<int> list) {
     final res = list.toList(growable: false)..sort();
     return res[edgeTableNeighbors];

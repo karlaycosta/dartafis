@@ -1,20 +1,6 @@
 import 'dart:io';
 
-import 'package:dartafis/src/configuration/parameters.dart';
-import 'package:dartafis/src/extractor/binarized_image.dart';
-import 'package:dartafis/src/extractor/block_orientations.dart';
-import 'package:dartafis/src/extractor/image_equalization.dart';
-import 'package:dartafis/src/extractor/image_resizer.dart';
-import 'package:dartafis/src/extractor/local_histograms.dart';
-import 'package:dartafis/src/extractor/minutiae/minutia_collector.dart';
-import 'package:dartafis/src/extractor/minutiae/top_minutiae_filter.dart';
-import 'package:dartafis/src/extractor/oriented_smoothing.dart';
-import 'package:dartafis/src/extractor/segmentation_mask.dart';
-import 'package:dartafis/src/extractor/skeletons/skeleton_filters.dart';
-import 'package:dartafis/src/extractor/skeletons/skeletons.dart';
-import 'package:dartafis/src/features/skeleton.dart';
 import 'package:dartafis/src/finger_image.dart';
-import 'package:dartafis/src/primitives/block_map.dart';
 import 'package:dartafis/src/template.dart';
 
 const file = 'C:/Users/karla/Documents/Dart - projetos/dartafis/probe.bmp';

@@ -21,7 +21,7 @@ Future<void> main() async {
   // final usPerIteration = sw.elapsedMicroseconds / 10;
   // stdout.writeln('Media: ${usPerIteration.round()} us');
 
-  final a = await fromIsoFmd(fmd);
+  final a = fromIsoFmdSync(fmd);
   final b = await fromIsoFmd(fmd2);
   final matcher = SearchMatcher(a);
   final sw = Stopwatch()..start();

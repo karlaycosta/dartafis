@@ -6,9 +6,9 @@ import 'package:test/test.dart';
 void main() {
   group('BlockMap', () {
     test('Construtor', () {
-      final width = 400;
-      final height = 600;
-      final maxBlockSize = 20;
+      const width = 400;
+      const height = 600;
+      const maxBlockSize = 20;
 
       final blockMap = BlockMap(width, height, maxBlockSize);
 

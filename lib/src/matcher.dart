@@ -26,7 +26,7 @@ final class SearchMatcher {
   ///
   /// O parâmetro [probe] é um [SearchTemplate] que será usado
   /// para inicializar o matcher.
-  SearchMatcher(SearchTemplate probe) : search = probe, hash = build(probe);
+  SearchMatcher(this.search) : hash = build(search);
 
   /// Um template usado para realizar operações de busca.
   final SearchTemplate search;

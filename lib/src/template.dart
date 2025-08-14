@@ -65,88 +65,88 @@ Future<SearchTemplate> featureExtract(FingerImage image) async {
 /// ```
 Future<SearchTemplate> fromIsoFmd(Uint8List fmd) async {
   int decode(int value, double dpi) => (value / dpi * 500).round();
-  final code0 = String.fromCharCode(0);
+  // --- Otimização: Criar a view do buffer uma única vez ---
+  final byteData = fmd.buffer.asByteData();
+
+  const code0 = '\u0000';
+
   // Verifica o cabeçalho (MAGIC + VERSION)
-  if (String.fromCharCodes(fmd.buffer.asUint8List(0, 8)) !=
-      'FMR$code0 20$code0') {
+  if (String.fromCharCodes(fmd.sublist(0, 8)) != 'FMR$code0 20$code0') {
     throw Exception('Arquivo inválido');
   }
-  final totalBytes = fmd.buffer.asByteData(8, 4).getUint32(0);
-  final minCount = fmd.buffer.asByteData(27, 1).getUint8(0);
+
+  final totalBytes = byteData.getUint32(8);
+  final minCount = byteData.getUint8(27);
   // Verifica a integridade dos bytes
-  if (28 + (minCount * 6) + 2 != totalBytes) {
+  if (30 + (minCount * 6) != totalBytes) {
     throw Exception('Arquivo corrompido');
   }
-  try {
-    final width = fmd.buffer.asByteData(14, 2).getUint16(0);
-    final heigth = fmd.buffer.asByteData(16, 2).getUint16(0);
-    final resolutionX = fmd.buffer.asByteData(18, 2).getUint16(0) * 2.54;
-    final resolutionY = fmd.buffer.asByteData(20, 2).getUint16(0) * 2.54;
-    final widthX = decode(width, resolutionX);
-    final heigthY = decode(heigth, resolutionY);
-    final minutiae = List<FeatureMinutia>.generate(minCount, (i) {
-      final ii = i * 6;
-      final byteX = fmd.buffer.asByteData(28 + ii, 2).getUint16(0);
-      final type = byteX >> 14;
-      final byteY = fmd.buffer.asByteData(30 + ii, 2).getUint16(0);
-      final angle = fmd.buffer.asByteData(32 + ii, 1).getUint8(0);
-      final position = (
-        x: decode(byteX & 0x3fff, resolutionX),
-        y: decode(byteY, resolutionY),
-      );
-      return (
-        x: position.x,
-        y: position.y,
-        direction: complementary(angle / 256 * pi2),
-        type: type == 1 ? MinutiaType.ending : MinutiaType.bifurcation,
-      );
-    });
-    return SearchTemplate((width: widthX, height: heigthY, minutiae: minutiae));
-  } catch (e) {
-    rethrow;
-  }
+
+  final width = byteData.getUint16(14);
+  final heigth = byteData.getUint16(16);
+  final resolutionX = byteData.getUint16(18) * 2.54;
+  final resolutionY = byteData.getUint16(20) * 2.54;
+  final widthX = decode(width, resolutionX);
+  final heigthY = decode(heigth, resolutionY);
+  final minutiae = List<FeatureMinutia>.generate(minCount, (i) {
+    final ii = i * 6;
+    final byteX = byteData.getUint16(28 + ii);
+    final byteY = byteData.getUint16(30 + ii);
+    final angle = byteData.getUint8(32 + ii);
+    final position = (
+      x: decode(byteX & 0x3fff, resolutionX),
+      y: decode(byteY, resolutionY),
+    );
+    return (
+      x: position.x,
+      y: position.y,
+      direction: complementary(angle / 256 * pi2),
+      type: (byteX >> 14) == 1 ? MinutiaType.ending : MinutiaType.bifurcation,
+    );
+  });
+  return SearchTemplate((width: widthX, height: heigthY, minutiae: minutiae));
 }
 
 SearchTemplate fromIsoFmdSync(Uint8List fmd) {
   int decode(int value, double dpi) => (value / dpi * 500).round();
-  final code0 = String.fromCharCode(0);
+  // --- Otimização: Criar a view do buffer uma única vez ---
+  final byteData = fmd.buffer.asByteData();
+
+  const code0 = '\u0000';
+
   // Verifica o cabeçalho (MAGIC + VERSION)
-  if (String.fromCharCodes(fmd.buffer.asUint8List(0, 8)) !=
-      'FMR$code0 20$code0') {
+  if (String.fromCharCodes(fmd.sublist(0, 8)) != 'FMR$code0 20$code0') {
     throw Exception('Arquivo inválido');
   }
-  final totalBytes = fmd.buffer.asByteData(8, 4).getUint32(0);
-  final minCount = fmd.buffer.asByteData(27, 1).getUint8(0);
+
+  final totalBytes = byteData.getUint32(8);
+  final minCount = byteData.getUint8(27);
   // Verifica a integridade dos bytes
-  if (28 + (minCount * 6) + 2 != totalBytes) {
+  if (30 + (minCount * 6) != totalBytes) {
     throw Exception('Arquivo corrompido');
   }
-  try {
-    final width = fmd.buffer.asByteData(14, 2).getUint16(0);
-    final heigth = fmd.buffer.asByteData(16, 2).getUint16(0);
-    final resolutionX = fmd.buffer.asByteData(18, 2).getUint16(0) * 2.54;
-    final resolutionY = fmd.buffer.asByteData(20, 2).getUint16(0) * 2.54;
-    final widthX = decode(width, resolutionX);
-    final heigthY = decode(heigth, resolutionY);
-    final minutiae = List<FeatureMinutia>.generate(minCount, (i) {
-      final ii = i * 6;
-      final byteX = fmd.buffer.asByteData(28 + ii, 2).getUint16(0);
-      final type = byteX >> 14;
-      final byteY = fmd.buffer.asByteData(30 + ii, 2).getUint16(0);
-      final angle = fmd.buffer.asByteData(32 + ii, 1).getUint8(0);
-      final position = (
-        x: decode(byteX & 0x3fff, resolutionX),
-        y: decode(byteY, resolutionY),
-      );
-      return (
-        x: position.x,
-        y: position.y,
-        direction: complementary(angle / 256 * pi2),
-        type: type == 1 ? MinutiaType.ending : MinutiaType.bifurcation,
-      );
-    });
-    return SearchTemplate((width: widthX, height: heigthY, minutiae: minutiae));
-  } catch (e) {
-    rethrow;
-  }
+
+  final width = byteData.getUint16(14);
+  final heigth = byteData.getUint16(16);
+  final resolutionX = byteData.getUint16(18) * 2.54;
+  final resolutionY = byteData.getUint16(20) * 2.54;
+  final widthX = decode(width, resolutionX);
+  final heigthY = decode(heigth, resolutionY);
+  final minutiae = List<FeatureMinutia>.generate(minCount, (i) {
+    final ii = i * 6;
+    final byteX = byteData.getUint16(28 + ii);
+    final byteY = byteData.getUint16(30 + ii);
+    final angle = byteData.getUint8(32 + ii);
+    final position = (
+      x: decode(byteX & 0x3fff, resolutionX),
+      y: decode(byteY, resolutionY),
+    );
+    return (
+      x: position.x,
+      y: position.y,
+      direction: complementary(angle / 256 * pi2),
+      type: (byteX >> 14) == 1 ? MinutiaType.ending : MinutiaType.bifurcation,
+    );
+  });
+  return SearchTemplate((width: widthX, height: heigthY, minutiae: minutiae));
 }

@@ -32,7 +32,7 @@ List<ConsideredOrientation> plan() {
   );
   bool rep = false;
   final zero = IntPoint.zero();
-  final maxMin = maxOrientationRadius / minOrientationRadius;
+  const maxMin = maxOrientationRadius / minOrientationRadius;
   for (int y = 0; y < orientationSplit; y++) {
     for (int x = 0; x < orientationsChecked; x++) {
       final sample = ConsideredOrientation();

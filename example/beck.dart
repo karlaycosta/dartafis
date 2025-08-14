@@ -3,7 +3,7 @@ import 'dart:math';
 
 void main(List<String> args) {
   final sw = Stopwatch()..start();
-  final u = 5; //int.parse(args[0]); // Get an input number from the command line
+  const u = 5; //int.parse(args[0]); // Get an input number from the command line
   final r = Random().nextInt(10000); // Get a random integer 0 <= r < 10k
 
   final a = List.filled(10000, 0);

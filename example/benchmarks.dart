@@ -1,10 +1,6 @@
-import 'dart:io';
-
-import 'package:dartafis/dartafis.dart';
-
 const file = 'C:/Users/karla/Documents/Dart - projetos/dartafis/probe.bmp';
 Future<void> main(List<String> args) async {
-  final dynamic a = 'ok';
+  const dynamic a = 'ok';
   switch (a) {
     case bool a:
       print(a);
