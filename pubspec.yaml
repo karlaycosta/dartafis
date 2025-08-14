@@ -1,5 +1,5 @@
 name: dartafis
-description: A starting point for Dart libraries or applications.
+description: Uma biblioteca para extração e processamento de características de impressões digitais.
 version: 0.1.0
 repository: https://github.com/karlaycosta/dartafis
 
