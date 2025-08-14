@@ -1,4 +1,3 @@
-import 'package:collection/collection.dart';
 import 'package:dartafis/dartafis.dart';
 import 'package:dartafis/src/features/edge_shape.dart';
 import 'package:dartafis/src/matcher/edge_hashes.dart';
@@ -8,6 +7,7 @@ import 'package:dartafis/src/matcher/pairing_graph.dart';
 import 'package:dartafis/src/matcher/root_list.dart';
 import 'package:dartafis/src/matcher/scoring.dart';
 import 'package:dartafis/src/matcher/scoring_data.dart';
+import 'package:dartafis/src/primitives/priority_queue.dart';
 
 /// Classe que representa o mecanismo de correspondência.
 ///

@@ -1,4 +1,3 @@
-import 'package:collection/collection.dart';
 import 'package:dartafis/src/configuration/parameters.dart';
 import 'package:dartafis/src/extractor/skeletons/skeleton_filters.dart';
 import 'package:dartafis/src/extractor/skeletons/skeleton_gap.dart';
@@ -8,6 +7,7 @@ import 'package:dartafis/src/features/skeleton_ridge.dart';
 import 'package:dartafis/src/primitives/boolean_matrix.dart';
 import 'package:dartafis/src/primitives/double_angle.dart';
 import 'package:dartafis/src/primitives/int_point.dart';
+import 'package:dartafis/src/primitives/priority_queue.dart';
 
 void addGapRidge(BooleanMatrix shadow, SkeletonGap gap, List<IntPoint> line) {
   final ridge = SkeletonRidge();

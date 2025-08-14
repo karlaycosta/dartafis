@@ -1,5 +1,5 @@
 import 'dart:typed_data';
-import 'package:crypto/crypto.dart';
+// import 'package:crypto/crypto.dart';
 
 @pragma('vm:prefer-inline')
 class BooleanMatrix {
@@ -186,7 +186,8 @@ class BooleanMatrix {
 
   // Método otimizado para hash usando bytes diretamente
   String hash() {
-    return md5.convert(_data).toString().toUpperCase();
+    // return md5.convert(_data).toString().toUpperCase();
+    return '$hashCode';
   }
 
   // Método alternativo de hash usando buffer string (mais lento)
@@ -214,7 +215,8 @@ class BooleanMatrix {
   }
 
   @override
-  int get hashCode => Object.hash(width, height, hash());
+  int get hashCode => width.hashCode ^ height.hashCode ^ _data.hashCode;
+  // int get hashCode => Object.hash(width, height, hash());
 }
 
 // import 'dart:convert';

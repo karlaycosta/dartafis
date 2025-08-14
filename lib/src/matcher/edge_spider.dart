@@ -1,9 +1,8 @@
-import 'package:collection/collection.dart';
-
 import 'package:dartafis/src/configuration/parameters.dart';
 import 'package:dartafis/src/features/neighbor_edge.dart';
 import 'package:dartafis/src/matcher/minutia_pair.dart';
 import 'package:dartafis/src/matcher/pairing_graph.dart';
+import 'package:dartafis/src/primitives/priority_queue.dart';
 
 final double _complementaryMaxAngleError = complementary(maxAngleError);
 
