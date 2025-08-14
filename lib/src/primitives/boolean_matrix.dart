@@ -206,18 +206,16 @@ class BooleanMatrix {
     if (identical(this, other)) return true;
     if (other is! BooleanMatrix) return false;
     if (width != other.width || height != other.height) return false;
-    
+
     for (int i = 0; i < _totalSize; i++) {
       if (_data[i] != other._data[i]) return false;
     }
     return true;
   }
 
-  // @override
-  // int get hashCode => Object.hash(width, height, hash());
+  @override
+  int get hashCode => Object.hash(width, height, hash());
 }
-
-
 
 // import 'dart:convert';
 // import 'package:crypto/crypto.dart';

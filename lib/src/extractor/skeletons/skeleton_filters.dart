@@ -144,11 +144,10 @@ void innerMinutiaeFilter(List<FeatureMinutia> minutiae, BooleanMatrix mask) {
   //       .round();
   // }
   minutiae.removeWhere((minutia) {
-    final arrow =
-        double_angle
-            .toVector(minutia.direction)
-            .multiply(-maskDisplacement)
-            .round();
+    final arrow = double_angle
+        .toVector(minutia.direction)
+        .multiply(-maskDisplacement)
+        .round();
     return mask.getF(minutia.x + arrow.x, minutia.y + arrow.y, false) == false;
   });
 }
@@ -157,12 +156,11 @@ void minutiaCloudFilter(List<FeatureMinutia> minutiae) {
   const radiusSq = minutiaCloudRadius * minutiaCloudRadius;
 
   minutiae.removeWhere((minutia) {
-    final count =
-        minutiae.where((neighbor) {
-          final dx = neighbor.x - minutia.x;
-          final dy = neighbor.y - minutia.y;
-          return dx * dx + dy * dy <= radiusSq;
-        }).length;
+    final count = minutiae.where((neighbor) {
+      final dx = neighbor.x - minutia.x;
+      final dy = neighbor.y - minutia.y;
+      return dx * dx + dy * dy <= radiusSq;
+    }).length;
 
     return count - 1 > maxCloudSize;
   });

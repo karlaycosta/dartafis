@@ -54,8 +54,8 @@ void compute(
         supportedMinutiaScore * score.supportedMinutiaCount
     ..minutiaTypeScore = minutiaTypeScore * score.minutiaTypeHits;
 
-  final innerDistanceRadius =
-      (distanceErrorFlatness * maxDistanceError).round();
+  final innerDistanceRadius = (distanceErrorFlatness * maxDistanceError)
+      .round();
   const innerAngleRadius = angleErrorFlatness * maxAngleError;
 
   score

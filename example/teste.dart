@@ -18,12 +18,13 @@ void teste<T>(Matrix<T> matrix) {
     }
   }
 }
+
 typedef Karlay = ({int x, int y});
 extension type Deriks(Karlay k) {
   int get area => k.x * k.y;
 }
 void main(List<String> args) {
-  final Deriks r = Deriks((x: 10, y:5));
+  final Deriks r = Deriks((x: 10, y: 5));
   r.area;
   final matrix = (list: [1, 2, 3, 4, 5, 6], col: 3, row: 2);
   teste(matrix);
@@ -54,6 +55,7 @@ List<List<NeighborEdge>> buildTable(List<FeatureMinutia> minutiae) {
     final res = list.toList(growable: false)..sort();
     return res[edgeTableNeighbors];
   }
+
   for (var reference = 0; reference < minutiaeLength; reference++) {
     final rminutia = minutiae[reference];
     var maxSqDistance = 0x7fffffffffffffff;

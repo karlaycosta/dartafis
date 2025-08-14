@@ -27,7 +27,7 @@ void main() {
       expect(blockMap.secondary.corners, equals(IntPoint(22, 32)));
 
       expect(blockMap.primary.corner(0, 0), equals(IntPoint(0, 0)));
-	    expect(blockMap.primary.corner(20, 30), equals(IntPoint(width, height)));
+      expect(blockMap.primary.corner(20, 30), equals(IntPoint(width, height)));
       expect(blockMap.primary.corner(10, 15), equals(IntPoint(200, 300)));
       expect(blockMap.primary.block(0, 0), equals(IntRect(0, 0, 20, 20)));
       expect(blockMap.primary.block(19, 29), equals(IntRect(380, 580, 20, 20)));
@@ -35,8 +35,14 @@ void main() {
 
       expect(blockMap.secondary.corner(0, 0), equals(IntPoint(0, 0)));
       expect(blockMap.secondary.block(0, 0), equals(IntRect(0, 0, 10, 10)));
-      expect(blockMap.secondary.block(20, 30), equals(IntRect(390, 590, 10, 10)));
-      expect(blockMap.secondary.block(10, 15), equals(IntRect(190, 290, 20, 20)));
+      expect(
+        blockMap.secondary.block(20, 30),
+        equals(IntRect(390, 590, 10, 10)),
+      );
+      expect(
+        blockMap.secondary.block(10, 15),
+        equals(IntRect(190, 290, 20, 20)),
+      );
     });
   });
 }

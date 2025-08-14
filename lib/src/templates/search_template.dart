@@ -8,8 +8,11 @@ import 'package:dartafis/src/features/neighbor_edge.dart';
 /// - `height` (int): A altura da característica.
 /// - `minutiae` (List`<FeatureMinutia>`): Uma lista de minúcias associadas
 ///   à característica.
-typedef FeatureTemplate =
-    ({int width, int height, List<FeatureMinutia> minutiae});
+typedef FeatureTemplate = ({
+  int width,
+  int height,
+  List<FeatureMinutia> minutiae,
+});
 
 /// Uma classe template para funcionalidade de busca.
 ///
